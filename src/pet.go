@@ -89,7 +89,7 @@ func ReadPets(filename string) []Pet {
 	file.Read(data)
 
 	var pets = []Pet{}
-	err = UnJsonify(data, pets)
+	//err = UnJsonify(data, pets)
 	log.Fatalf("%d\n", len(pets))
 	if err != nil {
 		log.Fatalf("Error reading json data file")

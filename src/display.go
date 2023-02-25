@@ -1,6 +1,7 @@
 package main
 
 import (
+    "fmt"
     "log"
     "github.com/gdamore/tcell/v2"
     "github.com/bennicholls/burl-E/reximage"
@@ -54,7 +55,12 @@ func draw(page int, pet Pet) {
             }
             draw_xp_image(0, 3, image)
 
-        
+            // Stats
+            draw_text(20, 4, "     Name : " + pet.Name)
+            draw_text(20, 6, "Happiness : " + "Fix Orestest")
+            draw_text(20, 7, "   Hunger : " + fmt.Sprintf("%v", pet.Hunger))
+            draw_text(20, 8, "   Energy : " + fmt.Sprintf("%v", pet.Energy))
+            draw_text(20, 9, "   Thirst : " + fmt.Sprintf("%v", pet.Thirst))
     }
 
     display.Show()
@@ -73,4 +79,25 @@ func setup_tcell() {
 
     display.SetStyle(def_style)
     display.Clear()
+
+    go func() {
+        for {
+            // Poll event
+            ev := display.PollEvent()
+
+            // Process event
+            switch ev := ev.(type) {
+            case *tcell.EventResize:
+                display.Sync()
+            case *tcell.EventKey:
+                if ev.Key() == tcell.KeyEscape || ev.Rune() == 'q' {
+                    close(time_to_quit)
+                    return
+                } else {
+                        process_raw_input(ev)
+                }
+            }
+        }
+    }()
+
 }
