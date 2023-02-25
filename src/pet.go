@@ -68,8 +68,9 @@ func Jsonify(pet []Pet) (petJson []byte, e error) {
 	return json.Marshal(pet)
 }
 
-func WritePetToJson(pet []Pet, path string) error {
+func WritePetToJson(pet []Pet) error {
 	data, _ := Jsonify(pet)
+	path := CreateDataDir()
 	err := os.WriteFile(path, data, fs.FileMode(0644))
 
 	return err
@@ -79,7 +80,7 @@ func Unjsonify(data []byte, pet *Pet) error {
 	return json.Unmarshal(data, pet)
 }
 
-func readPets(filename string, pet *Pet) {
+func ReadPets(filename string, pet *Pet) {
 	f, err := os.Open(filename)
 	defer f.Close()
 	if err != nil {
