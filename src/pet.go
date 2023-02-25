@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/fs"
 	"math/rand"
 	"os"
@@ -47,11 +48,15 @@ func RandomizeStats(strength *int, dexterity *int, constition *int, intelligence
 
 }
 
+func (pet Pet) Print() {
+	fmt.Printf("%+v\n", pet)
+}
+
 func Jsonify(pet []Pet) (petJson []byte, e error) {
 	return json.Marshal(pet)
 }
 
-func WriteJsonToFile(pet []Pet) error {
+func WritePetToJson(pet []Pet) error {
 	data, _ := Jsonify(pet)
 	err := os.WriteFile("pets.json", data, fs.FileMode(0644))
 
