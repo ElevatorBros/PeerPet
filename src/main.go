@@ -7,9 +7,7 @@ func main() {
 
 	path := CreateDataDir()
 
-	array := []Pet{*pet}
-
-	_ = WritePetToJson(array, path)
+	_ = WritePetToJson(pet, path)
 
 	pets := ReadPets(path)
 

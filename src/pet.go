@@ -62,19 +62,20 @@ func (pet Pet) AdvanceEnergy(value float32) {
 	pet.Energy -= value
 }
 
-func WritePetToJson(pet []Pet, path string) error {
+func WritePetToJson(pet *Pet, path string) error {
 	data, _ := Jsonify(pet)
+	//handle error
 	err := os.WriteFile(path, data, fs.FileMode(0644))
 
 	return err
 }
 
-func Jsonify(pet []Pet) (petJson []byte, e error) {
+func Jsonify(pet *Pet) (petJson []byte, e error) {
 	return json.Marshal(pet)
 }
 
-func UnJsonify(data []byte, pet []Pet) error {
-	return json.Unmarshal(data, &pet)
+func UnJsonify(data []byte, pet *Pet) error {
+	return json.Unmarshal(data, pet)
 }
 
 func ReadPets(filename string) []Pet {
