@@ -1,14 +1,20 @@
 package main
 
-import (
-	"fmt"
-)
+import ()
 
 func main() {
-	fmt.Printf("no errors")
 	pet := NewPet("john")
+
+	path := CreateDataDir()
 
 	array := []Pet{*pet}
 
-	_ = WritePetToJson(array)
+	_ = WritePetToJson(array, path)
+
+	pets := ReadPets(path)
+
+	for i := range pets {
+		pets[i].Print()
+	}
+
 }
