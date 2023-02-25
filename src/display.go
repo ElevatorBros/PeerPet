@@ -11,7 +11,6 @@ import (
 )
 
 
-var display tv.Application
 const LEFT_SIZE = 40 
 
 func DrawXP(display *tv.Table, offsetX int, offsetY int, image reximage.ImageData) {
@@ -19,7 +18,6 @@ func DrawXP(display *tv.Table, offsetX int, offsetY int, image reximage.ImageDat
         for y := 0; y < image.Height; y++ {
             img_cell, _ := image.GetCell(x, y)
             fg_col := tc.NewRGBColor(int32(img_cell.R_f), int32(img_cell.G_f), int32(img_cell.B_f))
-            // bg_col := tc.NewRGBColor(int32(img_cell.R_b), int32(img_cell.G_b), int32(img_cell.B_b))
             
             color_style := tc.StyleDefault.Foreground(fg_col)
 
@@ -91,6 +89,12 @@ func Init(input chan tc.Key) {
  //    }()
 }
 
+func MonitorInput(e *tc.EventKey) *tc.EventKey {
+    // Put your funny code here josh
+
+    return e;
+}
+
 func RunGUI() {
     pet_table := tv.NewTable()
     pet_table.SetBorder(true).SetTitle("Pet")
@@ -111,6 +115,8 @@ func RunGUI() {
     flex := tv.NewFlex().
         AddItem(left_flex, 0, 1, false)
     flex.SetBackgroundColor(tc.ColorDefault)
+
+    flex.SetInputCapture(MonitorInput)
 
 	if err := tv.NewApplication().SetRoot(flex, true).Run(); err != nil {
 		panic(err)
