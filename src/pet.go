@@ -2,8 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/fs"
+	"io/ioutil"
+	"log"
 	"math/rand"
 	"os"
 	"time"
@@ -48,8 +49,19 @@ func RandomizeStats(strength *int, dexterity *int, constition *int, intelligence
 
 }
 
-func (pet Pet) Print() {
-	fmt.Printf("%+v\n", pet)
+func (pet Pet) AdvanceHunger(value float32) {
+	time.Sleep(5 * time.Second)
+	pet.Hunger += value
+}
+
+func (pet Pet) AdvanceThirst(value float32) {
+	time.Sleep(5 * time.Second)
+	pet.Hunger += value
+}
+
+func (pet Pet) AdvanceEnergy(value float32) {
+	time.Sleep(5 * time.Second)
+	pet.Energy -= value
 }
 
 func Jsonify(pet []Pet) (petJson []byte, e error) {
@@ -67,15 +79,22 @@ func Unjsonify(data []byte, pet *Pet) error {
 	return json.Unmarshal(data, pet)
 }
 
-func (pet Pet) AdvanceHunger(value float32) {
-	time.Sleep(5 * time.Second)
-	pet.Hunger += value
+func readPets(filename string, pet *Pet) {
+	f, err := os.Open(filename)
+	defer f.Close()
+	if err != nil {
+		log.Fatalf("Error reading pets.json file")
+	}
+	b, err := ioutil.ReadAll(f)
+	if err != nil {
+		log.Fatalf("Error reading pets.json file")
+	}
+	err = Unjsonify(b, pet)
+	if err != nil {
+		log.Fatalf("Error reading json data file")
+	}
 }
-func (pet Pet) AdvanceThirst(value float32) {
-	time.Sleep(5 * time.Second)
-	pet.Hunger += value
-}
-func (pet Pet) AdvanceEnergy(value float32) {
-	time.Sleep(5 * time.Second)
-	pet.Energy -= value
+
+func (pet Pet) Print() {
+	log.Printf("%+v\n", pet)
 }
