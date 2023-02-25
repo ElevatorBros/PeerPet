@@ -17,7 +17,7 @@ type Pet struct {
 
 	Strength     int `json:"strength"`
 	Dexterity    int `json:"dexterity"`
-	Constituton  int `json:"constition"`
+	Constituton  int `json:"constution"`
 	Intelligence int `json:"intelligence"`
 
 	Dob        time.Time `json:"dob"`
@@ -73,9 +73,12 @@ func UnJsonify(data []byte, pet *Pet) error {
 }
 
 func WritePetToJson(pet *Pet, path string) error {
-	data, _ := Jsonify(pet)
-	//handle error
-	err := os.WriteFile(path+pet.Name+".json", data, fs.FileMode(0644))
+	data, err := Jsonify(pet)
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.WriteFile(path+"/"+pet.Name+".json", data, fs.FileMode(0644))
 	return err
 }
 
@@ -93,25 +96,16 @@ func ReadPets(folder_path string) []Pet {
 	}
 
 	for _, filename := range files {
-		file, err := os.Open(folder.Name() + "/" + filename.Name())
-		log.Print(folder.Name() + "\n")
-		log.Print(file.Name() + "\n")
-		defer file.Close()
-		if err != nil {
-			panic(err)
-		}
-
-		var data = []byte{}
-		file.Read(data)
+		data, _ := os.ReadFile(folder.Name() + "/" + filename.Name())
 
 		pet := new(Pet)
 		err = UnJsonify(data, pet)
 		if err != nil {
 			panic(err)
 		}
+
 		pets = append(pets, *pet)
 	}
-
 	return pets
 }
 
