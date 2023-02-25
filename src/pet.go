@@ -93,7 +93,7 @@ func ReadPets(folder_path string) []Pet {
 
 	for _, filename := range files {
 		file, err := os.Open(folder.Name() + "/" + filename.Name())
-		log.Fatal(file.Name())
+		// log.Fatal(file.Name())
 		defer file.Close()
 		if err != nil {
 			panic(err)
