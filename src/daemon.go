@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"os"
 )
@@ -15,10 +14,6 @@ func CreateDataDir() string {
 	if xdg_data == "" {
 		xdg_data = "~/.local/share"
 	}
-	xdg_data = fmt.Sprintf("%s/peerpet", xdg_data)
-	folder, err := os.Stat(xdg_data)
-	if errors.Is(err, os.ErrNotExist) {
-		os.Mkdir(folder.Name(), os.ModeDir)
-	}
+    os.MkdirAll(fmt.Sprintf("%s/peerpet", xdg_data), os.FileMode(0755))
 	return fmt.Sprintf("%s/pets.json", xdg_data)
 }
