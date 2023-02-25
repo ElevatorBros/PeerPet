@@ -22,3 +22,7 @@ type Pet struct {
 func jsonify(pet *Pet) (petJson []byte, e error) {
 	return json.Marshal(pet)
 }
+
+func Unjsonify(data []byte, pet *Pet) error {
+	return json.Unmarshal(data, pet)
+}
