@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// Pet Structure
 type Pet struct {
 	Name   string  `json:"name"`
 	Hunger float32 `json:"hunger"`
@@ -24,6 +25,7 @@ type Pet struct {
 	SpritePath []string  `json:"spritepath"`
 }
 
+// Pet Constructor
 func NewPet(name string) *Pet {
 	pet := new(Pet)
 
@@ -40,6 +42,7 @@ func NewPet(name string) *Pet {
 	return pet
 }
 
+// Pet Stat Randomizer
 func RandomizeStats(strength *int, dexterity *int, constition *int, intelligence *int) {
 	rand.NewSource(time.Now().UnixNano())
 
@@ -49,29 +52,35 @@ func RandomizeStats(strength *int, dexterity *int, constition *int, intelligence
 	*intelligence = rand.Intn(100)
 }
 
-func (pet Pet) AdvanceHunger(value float32) {
+// Progresses Hunger
+func (pet Pet) ProgressHunger(value float32) {
 	time.Sleep(5 * time.Second)
 	pet.Hunger += value
 }
 
-func (pet Pet) AdvanceThirst(value float32) {
+// Progresses Thirst
+func (pet Pet) ProgressThirst(value float32) {
 	time.Sleep(5 * time.Second)
 	pet.Hunger += value
 }
 
-func (pet Pet) AdvanceEnergy(value float32) {
+// Progresses Energy
+func (pet Pet) ProgressEnergy(value float32) {
 	time.Sleep(5 * time.Second)
 	pet.Energy -= value
 }
 
+// Converts Pet to []bytes
 func Jsonify(pet *Pet) (petJson []byte, e error) {
 	return json.Marshal(pet)
 }
 
+// Converts []bytes to Pet
 func UnJsonify(data []byte, pet *Pet) error {
 	return json.Unmarshal(data, pet)
 }
 
+// Writes []bytes to file
 func WritePetToJson(pet *Pet, path string) error {
 	data, err := Jsonify(pet)
 	if err != nil {
@@ -82,6 +91,7 @@ func WritePetToJson(pet *Pet, path string) error {
 	return err
 }
 
+// Reads file to []bytes
 func ReadPets(folder_path string) []Pet {
 	var pets = []Pet{}
 
@@ -109,6 +119,7 @@ func ReadPets(folder_path string) []Pet {
 	return pets
 }
 
+// Pet ToString
 func (pet Pet) Print() {
 	log.Printf("%+v\n", pet)
 }

@@ -1,44 +1,24 @@
 package main
 
-import (
-	"log"
-)
-
 var time_to_quit chan struct{}
 
 func main() {
+	//creates pet named john
 	pet := NewPet("john")
+	//makes sure storing directory exists and returns path
 	path := CreateDataDir()
 
+	//serializes pet to json
 	err := WritePetToJson(pet, path)
 	if err != nil {
-		log.Print(err.Error())
+		panic(err)
 	}
 
+	//reads stored json files to pet array
 	pets := ReadPets(path)
 
+	//prints pet array data
 	for _, thing := range pets {
 		thing.Print()
 	}
-
-	/*
-		setup_tcell()
-		time_to_quit = make(chan struct{})
-
-		for {
-			select {
-			case _, ok := <-time_to_quit:
-				if ok == false {
-					return
-				}
-			case <-time.After(time.Millisecond * 1):
-				break
-			}
-
-			// draw
-			draw(0, *pet)
-
-			get_input()
-		}
-	*/
 }
