@@ -12,7 +12,7 @@ var in_combat = true
 // GO_Routine sync
 var wg sync.WaitGroup
 
-func main() {
+func main1() {
 	Combat()
 }
 func Combat() {
