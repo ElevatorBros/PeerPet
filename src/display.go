@@ -24,6 +24,10 @@ func quit_tcell() {
     }
 }
 
+func draw() {
+    display.Show()
+}
+
 func setup_tcell() {
     def_style = tcell.StyleDefault
     var err error
@@ -36,5 +40,5 @@ func setup_tcell() {
 	}
 
     display.SetStyle(def_style)
-
+    display.Clear()
 }
