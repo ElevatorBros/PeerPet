@@ -1,23 +1,24 @@
 package main
 
 import (
+	"encoding/json"
 	"time"
 )
 
 type Pet struct {
-	name   string
-	hunger float32
-	thirst float32
-	energy float32
+	Name   string
+	Hunger float32
+	Thirst float32
+	Energy float32
 
-	strength     int
-	dexterity    int
-	constituton  int
-	intelligence int
+	Strength     int
+	Dexterity    int
+	Constituton  int
+	Intelligence int
 
-	dob time.Time
+	Dob time.Time
 }
 
-func (p Pet) age() {
-
+func jsonify(pet *Pet) (petJson []byte, e error) {
+	return json.Marshal(pet)
 }
