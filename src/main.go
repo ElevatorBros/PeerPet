@@ -1,27 +1,19 @@
 package main
 
-import (
-    "github.com/gdamore/tcell/v2"
-)
+import "log"
 
 func main() {
-	//fmt.Printf("no errors")
+	pet := NewPet("john")
 
-    main_pet := 
+	path := CreateDataDir()
 
-    setup_tcell()
+	_ = WritePetToJson(pet, path)
 
-    for {
-        draw(0, )
-        ev := display.PollEvent()
-        switch ev := ev.(type) {
-            case *tcell.EventKey:
-                if ev.Key() == tcell.KeyEscape || ev.Key() == tcell.KeyCtrlC {
-                    quit_tcell()
-                    return;
-                }
-            case *tcell.EventResize:
-                display.Sync()
-        }
-    }
+	pets := ReadPets(path)
+
+	for i := range pets {
+		log.Printf("%s\n", pets[i].Name)
+		pets[i].Print()
+	}
+
 }

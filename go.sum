@@ -5,6 +5,8 @@ github.com/briandowns/spinner v1.21.0 h1:2lVBzf3iZ3cT/ulVXljc4BzlL3yTWZDzsGsamI7
 github.com/briandowns/spinner v1.21.0/go.mod h1:TcwZHb7Wb6vn/+bcVv1UXEzaA4pLS7yznHlkY/HzH44=
 github.com/cihub/seelog v0.0.0-20170130134532-f561c5e57575 h1:kHaBemcxl8o/pQ5VM1c8PVE1PubbNx3mjUr09OqWGCs=
 github.com/cihub/seelog v0.0.0-20170130134532-f561c5e57575/go.mod h1:9d6lWj8KzO/fd/NrVaLscBKmPigpZpn5YawRPw+e3Yo=
+github.com/codegoalie/golibnotify v0.1.0 h1:klJMgE+elOsuTLxFvZN+0q1XFgYGr6aT5RyIBb2dZ0c=
+github.com/codegoalie/golibnotify v0.1.0/go.mod h1:+v6J4ss13rISdS08ENaHtBlxYOyIAPXVEUM4KyRYpoY=
 github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -21,6 +23,8 @@ github.com/gdamore/tcell/v2 v2.6.0 h1:OKbluoP9VYmJwZwq/iLb4BxwKcwGthaa1YNBJIyCyS
 github.com/gdamore/tcell/v2 v2.6.0/go.mod h1:be9omFATkdr0D9qewWW3d+MEvl5dha+Etb5y65J2H8Y=
 github.com/gorilla/websocket v1.5.0 h1:PPwGk2jz7EePpoHN/+ClbZu8SPxiqlu12wZP/3sWmnc=
 github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
+github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 h1:iQTw/8FWTuc7uiaSepXwyf3o52HaUYcV+Tu66S3F5GA=
+github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0/go.mod h1:1NbS8ALrpOvjt0rHPNLyCIeMtbizbir8U//inJ+zuB8=
 github.com/lucasb-eyer/go-colorful v1.2.0 h1:1nnpGOrhyZZuNyfu1QjKiUICQ74+3FNCN69Aj6K7nkY=
 github.com/lucasb-eyer/go-colorful v1.2.0/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
 github.com/mars9/crypt v0.0.0-20150406101210-65899cf653ff h1:cse6GmPngwOH1CiXgLT6DcCFKxQasx1sv9jcHqj/bD4=
@@ -51,6 +55,8 @@ github.com/schollz/peerdiscovery v1.7.0 h1:JVOl8d39AsGFH5cN6Bs5uCy/puADoG/32wI3z
 github.com/schollz/peerdiscovery v1.7.0/go.mod h1:BouGdURKIFl7OGez+2lyZJKD+2tBQ2Mv3vtetie0H6A=
 github.com/schollz/progressbar v1.0.0 h1:gbyFReLHDkZo8mxy/dLWMr+Mpb1MokGJ1FqCiqacjZM=
 github.com/schollz/progressbar v1.0.0/go.mod h1:/l9I7PC3L3erOuz54ghIRKUEFcosiWfLvJv+Eq26UMs=
+github.com/sevlyar/go-daemon v0.1.6 h1:EUh1MDjEM4BI109Jign0EaknA2izkOyi0LV3ro3QQGs=
+github.com/sevlyar/go-daemon v0.1.6/go.mod h1:6dJpPatBT9eUwM5VCw9Bt6CdX9Tk6UWvhW3MebLDRKE=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
 github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=
