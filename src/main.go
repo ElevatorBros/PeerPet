@@ -1,19 +1,34 @@
 package main
 
-import "log"
+import (
+    "time"
+    //"github.com/gdamore/tcell/v2"
+)
 
+var time_to_quit chan struct{}
 func main() {
 	pet := NewPet("john")
 
-	path := CreateDataDir()
 
-	_ = WritePetToJson(pet, path)
+    setup_tcell()
 
-	pets := ReadPets(path)
+    time_to_quit = make(chan struct{})
 
-	for i := range pets {
-		log.Printf("%s\n", pets[i].Name)
-		pets[i].Print()
-	}
 
+
+    for {
+        select {
+            case _, ok := <- time_to_quit:
+                if ok == false {
+                    return
+                }
+            case <-time.After(time.Millisecond * 1):
+                break
+        } 
+
+        // draw
+        draw(0, *pet)
+
+        get_input()
+    }
 }
