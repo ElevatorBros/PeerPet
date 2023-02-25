@@ -14,6 +14,7 @@ require (
 	github.com/gdamore/encoding v1.0.0 // indirect
 	github.com/gdamore/tcell/v2 v2.6.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
+	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mars9/crypt v0.0.0-20150406101210-65899cf653ff // indirect
 	github.com/mattn/go-colorable v0.1.2 // indirect
@@ -28,6 +29,7 @@ require (
 	github.com/schollz/pake v1.1.1 // indirect
 	github.com/schollz/peerdiscovery v1.7.0 // indirect
 	github.com/schollz/progressbar v1.0.0 // indirect
+	github.com/sevlyar/go-daemon v0.1.6 // indirect
 	github.com/tscholl2/siec v0.0.0-20210707234609-9bdfc483d499 // indirect
 	github.com/urfave/cli v1.22.12 // indirect
 	golang.org/x/crypto v0.6.0 // indirect
