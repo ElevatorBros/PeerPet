@@ -7,17 +7,17 @@ import (
 )
 
 type Pet struct {
-	Name   string
-	Hunger float32
-	Thirst float32
-	Energy float32
+	Name   string  `json:"name"`
+	Hunger float32 `json:"hunger"`
+	Thirst float32 `json:"thirst"`
+	Energy float32 `json:"energy"`
 
-	Strength     int
-	Dexterity    int
-	Constituton  int
-	Intelligence int
+	Strength     int `json:"strength"`
+	Dexterity    int `json:"dexterity"`
+	Constituton  int `json:"constition"`
+	Intelligence int `json:"intelligence"`
 
-	Dob time.Time
+	Dob time.Time `json:"dob"`
 }
 
 func NewPet(name string) *Pet {
@@ -38,7 +38,10 @@ func NewPet(name string) *Pet {
 func RandomizeStats(strength *int, dexterity *int, constition *int, intelligence *int) {
 	rand.NewSource(time.Now().UnixNano())
 
-	//power := rand.Int(400) + 300
+	*strength = rand.Intn(100)
+	*dexterity = rand.Intn(100)
+	*constition = rand.Intn(100)
+	*intelligence = rand.Intn(100)
 
 }
 
