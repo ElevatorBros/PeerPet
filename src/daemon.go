@@ -15,5 +15,5 @@ func CreateDataDir() string {
 		xdg_data = "~/.local/share"
 	}
     os.MkdirAll(fmt.Sprintf("%s/peerpet", xdg_data), os.FileMode(0755))
-	return fmt.Sprintf("%s/pets.json", xdg_data)
+	return fmt.Sprintf("%s/peerpet/pets.json", xdg_data)
 }
