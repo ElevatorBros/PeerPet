@@ -14,24 +14,24 @@ import (
 var display tv.Application
 const LEFT_SIZE = 40 
 
-func draw_xp_image(display *tv.Table, offsetX int, offsetY int, image reximage.ImageData) {
+func DrawXP(display *tv.Table, offsetX int, offsetY int, image reximage.ImageData) {
     for x := 0; x < image.Width; x++ {
         for y := 0; y < image.Height; y++ {
             img_cell, _ := image.GetCell(x, y)
             fg_col := tc.NewRGBColor(int32(img_cell.R_f), int32(img_cell.G_f), int32(img_cell.B_f))
-            bg_col := tc.NewRGBColor(int32(img_cell.R_b), int32(img_cell.G_b), int32(img_cell.B_b))
+            // bg_col := tc.NewRGBColor(int32(img_cell.R_b), int32(img_cell.G_b), int32(img_cell.B_b))
             
-            color_style := tc.StyleDefault.Background(bg_col).Foreground(fg_col)
+            color_style := tc.StyleDefault.Foreground(fg_col)
 
             cell := tv.NewTableCell(fmt.Sprintf("%c", img_cell.Glyph))
             cell.SetStyle(color_style)
 
-            display.SetCell(offsetY + y, offsetX + x, cell)
+            display.SetCell(offsetY + y, offsetX - 1 + x, cell)
         }
     }
 }
 
-func draw(page int, pet Pet) {
+func drawPet(page int, pet Pet) {
     // numbers
     // draw_text(5, 1, "1    2    3    4    5")
     // display.SetContent(5*page + 4, 1, '[', nil, def_style)
@@ -92,17 +92,21 @@ func Init(input chan tc.Key) {
 }
 
 func RunGUI() {
-    pet_box := tv.NewTable()
-    pet_box.SetBorder(true).SetTitle("Title")
+    pet_table := tv.NewTable()
+    pet_table.SetBorder(true).SetTitle("Pet")
     message_box := tv.NewBox().SetBorder(true).SetTitle("Message")
+    stats_box := tv.NewTable()
+    stats_box.SetBorder(true).SetTitle("Stats")
+
     left_flex := tv.NewFlex().SetDirection(tv.FlexRow).
-        AddItem(pet_box, 0, 2, false).
-        AddItem(message_box, 0, 1, false)
+        AddItem(pet_table, 0, 5, false).
+        AddItem(message_box, 0, 1, false).
+        AddItem(stats_box, 0, 4, false)
 
-    image, _ := reximage.Import("./rec/pet1.xp")
-    offsetY, offsetX, _, _ := pet_box.GetInnerRect()
+    image, _ := reximage.Import("./rec/pet6.xp")
+    offsetY, offsetX, _, _ := pet_table.GetInnerRect()
 
-    draw_xp_image(pet_box, offsetX, offsetY, image)
+    DrawXP(pet_table, offsetX, offsetY, image)
 
     flex := tv.NewFlex().
         AddItem(left_flex, 0, 1, false)
