@@ -33,13 +33,30 @@ func draw_xp_image(offsetX int, offsetY int, image reximage.ImageData) {
     }
 }
 
-func draw() {
-    image, err := reximage.Import("./rec/pet1.xp")
-	if err != nil {
-		log.Fatalf("%+v", err)
-	}
+func draw_text(x int, y int, text string) {
+    for i := 0; i < utf8.RuneCountInString(text); i++ {
+        display.SetContent(x + i, y, rune(text[i]), nil, def_style)
+    }
+}
 
-    draw_xp_image(0, 0, image)
+func draw(page int, pet Pet) {
+    // numbers
+    draw_text(5, 1, "1    2    3    4    5")
+    display.SetContent(5*page + 4, 1, '[', nil, def_style)
+    display.SetContent(5*page + 6, 1, ']', nil, def_style)
+
+    switch page {
+        case 0: 
+            // Pet Image
+            image, err := reximage.Import("./rec/pet1.xp")
+            if err != nil {
+                log.Fatalf("%+v", err)
+            }
+            draw_xp_image(0, 3, image)
+
+        
+    }
+
     display.Show()
 }
 

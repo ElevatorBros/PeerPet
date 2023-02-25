@@ -16,6 +16,7 @@ type Pet struct {
 	intelligence int
 
 	dob time.Time
+    xp_path string
 }
 
 func (p Pet) age() {

@@ -7,10 +7,12 @@ import (
 func main() {
 	//fmt.Printf("no errors")
 
+    main_pet := 
+
     setup_tcell()
-    draw()
 
     for {
+        draw(0, )
         ev := display.PollEvent()
         switch ev := ev.(type) {
             case *tcell.EventKey:
