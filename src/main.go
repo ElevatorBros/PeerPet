@@ -1,7 +1,10 @@
 package main
 
 func main() {
-	_ = NewRelay()
+	//a := NewRelay()
+	//a.joinRoom("aaabb44")
+
+	//RunGUI()
 	//creates pet named john
 	pet := NewPet("john")
 	pet1 := NewPet("ronan")
