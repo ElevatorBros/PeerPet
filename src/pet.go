@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/fs"
 	"log"
 	"math/rand"
@@ -66,7 +65,7 @@ func (pet Pet) AdvanceEnergy(value float32) {
 func WritePetToJson(pet *Pet, path string) error {
 	data, _ := Jsonify(pet)
 	//handle error
-	err := os.WriteFile(fmt.Sprintf("%s/%s.json", path, pet.Name), data, fs.FileMode(0644))
+	err := os.WriteFile(path+pet.Name+".json", data, fs.FileMode(0644))
 
 	return err
 }
@@ -79,31 +78,35 @@ func UnJsonify(data []byte, pet *Pet) error {
 	return json.Unmarshal(data, pet)
 }
 
-func ReadPets(folder string) []Pet {
+func ReadPets(folder_path string) []Pet {
 	var pets = []Pet{}
-    f, err := os.Open(folder)
-    if err != nil {
-        panic(err)
-    }
-    files, err := f.ReadDir(0)
-    if err != nil {
-        panic(err)
-    }
-    for _, filename := range files {
-        file, err := os.Open(fmt.Sprintf("%s/%s", folder, filename.Name()))
-        defer file.Close()
-        if err != nil {
-            panic(err)
-        }
-        var data = []byte{}
-        pet := new(Pet)
-        file.Read(data)
-        err = UnJsonify(data, pet)
-        if err != nil {
-            panic(err)
-        }
-        pets = append(pets, *pet)
-    }
+
+	folder, err := os.Open(folder_path)
+	if err != nil {
+		panic(err)
+	}
+
+	files, err := folder.ReadDir(0)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, filename := range files {
+		file, err := os.Open(folder.Name() + "/" + filename.Name())
+		log.Fatal(file.Name())
+		defer file.Close()
+		if err != nil {
+			panic(err)
+		}
+		var data = []byte{}
+		pet := new(Pet)
+		file.Read(data)
+		err = UnJsonify(data, pet)
+		if err != nil {
+			panic(err)
+		}
+		pets = append(pets, *pet)
+	}
 
 	return pets
 }
