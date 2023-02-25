@@ -1,6 +1,6 @@
 package main
 
-import ()
+import "log"
 
 func main() {
 	pet := NewPet("john")
@@ -14,6 +14,7 @@ func main() {
 	pets := ReadPets(path)
 
 	for i := range pets {
+		log.Printf("%s\n", pets[i].Name)
 		pets[i].Print()
 	}
 

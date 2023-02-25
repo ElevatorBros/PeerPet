@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"io/fs"
-	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
@@ -46,7 +45,6 @@ func RandomizeStats(strength *int, dexterity *int, constition *int, intelligence
 	*dexterity = rand.Intn(100)
 	*constition = rand.Intn(100)
 	*intelligence = rand.Intn(100)
-
 }
 
 func (pet Pet) AdvanceHunger(value float32) {
@@ -64,10 +62,6 @@ func (pet Pet) AdvanceEnergy(value float32) {
 	pet.Energy -= value
 }
 
-func Jsonify(pet []Pet) (petJson []byte, e error) {
-	return json.Marshal(pet)
-}
-
 func WritePetToJson(pet []Pet, path string) error {
 	data, _ := Jsonify(pet)
 	err := os.WriteFile(path, data, fs.FileMode(0644))
@@ -75,23 +69,27 @@ func WritePetToJson(pet []Pet, path string) error {
 	return err
 }
 
-func Unjsonify(data []byte, pet []Pet) error {
+func Jsonify(pet []Pet) (petJson []byte, e error) {
+	return json.Marshal(pet)
+}
+
+func UnJsonify(data []byte, pet []Pet) error {
 	return json.Unmarshal(data, &pet)
 }
 
 func ReadPets(filename string) []Pet {
-	f, err := os.Open(filename)
-	defer f.Close()
-	if err != nil {
-		log.Fatalf("Error reading pets.json file")
-	}
-	b, err := ioutil.ReadAll(f)
+	file, err := os.Open(filename)
+	defer file.Close()
 	if err != nil {
 		log.Fatalf("Error reading pets.json file")
 	}
 
+	var data = []byte{}
+	file.Read(data)
+
 	var pets = []Pet{}
-	err = Unjsonify(b, pets)
+	err = UnJsonify(data, pets)
+	log.Fatalf("%d\n", len(pets))
 	if err != nil {
 		log.Fatalf("Error reading json data file")
 	}
