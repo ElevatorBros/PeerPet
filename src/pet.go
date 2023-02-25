@@ -2,7 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"io/fs"
 	"math/rand"
+	"os"
 	"time"
 )
 
@@ -47,6 +49,13 @@ func RandomizeStats(strength *int, dexterity *int, constition *int, intelligence
 
 func Jsonify(pet []Pet) (petJson []byte, e error) {
 	return json.Marshal(pet)
+}
+
+func WriteJsonToFile(pet []Pet) error {
+	data, _ := Jsonify(pet)
+	err := os.WriteFile("pets.json", data, fs.FileMode(0644))
+
+	return err
 }
 
 func Unjsonify(data []byte, pet *Pet) error {
