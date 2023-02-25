@@ -1,7 +1,7 @@
 BINARY_NAME = PeerPet
 FLAGS = -ldflags "-s -w"
 
-build: deps
+build:
 	go build ${FLAGS} -o ${BINARY_NAME} src/*.go
 
 run: build
