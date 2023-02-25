@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"math/rand"
 	"time"
 )
 
@@ -23,12 +24,15 @@ func NewPet(name string) *Pet {
 	pet := new(Pet)
 
 	pet.Name = name
+	pet.Dob = time.Now()
+
+	power := RandomizeStats()
 
 	return pet
 }
 
-func Randomize() int {
-
+func RandomizeStats(p) {
+	val := 0
 	return val
 }
 

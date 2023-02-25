@@ -6,6 +6,7 @@ require (
 	github.com/bennicholls/burl-E v0.0.0-20190708032244-24ccafc7d477 // indirect
 	github.com/briandowns/spinner v1.21.0 // indirect
 	github.com/cihub/seelog v0.0.0-20170130134532-f561c5e57575 // indirect
+	github.com/codegoalie/golibnotify v0.1.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fatih/color v1.7.0 // indirect
