@@ -16,6 +16,6 @@ func CreateDataDir() {
 	}
 	folder, err := os.Stat(xdg_data)
 	if errors.Is(err, os.ErrNotExist) {
-		os.Mkdir(folder.Name(), os.ModePerm)
+		os.Mkdir(folder.Name(), os.ModeDir)
 	}
 }
