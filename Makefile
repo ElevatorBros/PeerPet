@@ -16,4 +16,6 @@ deps:
 	go get github.com/bennicholls/burl-E/reximage
 	go get github.com/rivo/tview
 	go get github.com/codegoalie/golibnotify
+	go get github.com/joho/godotenv
+	go get github.com/schollz/croc/v9
 
