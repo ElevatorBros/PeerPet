@@ -1,14 +1,15 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 )
 
 func dMain() {
-
+    createDataDir()
 }
 
 func createDataDir() {
@@ -24,5 +25,24 @@ func createDataDir() {
     }
     if !folder.IsDir() {
       log.Fatalf("Folder is not directory")
+    }
+
+    var pet Pet
+    readPets(fmt.Sprintf("%s/pets.json", xdg_data), &pet)
+}
+
+func readPets(filename string, pet *Pet) {
+    f, err := os.Open(filename) 
+    defer f.Close()
+    if err != nil {
+        log.Fatalf("Error reading pets.json file")
+    }
+    b, err := ioutil.ReadAll(f)
+    if err != nil {
+        log.Fatalf("Error reading pets.json file")
+    }
+    err = Unjsonify(b, pet)
+    if err != nil  {
+        log.Fatalf("Error reading json data file")
     }
 }
