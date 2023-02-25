@@ -1,8 +1,7 @@
 package main
 
 func main() {
-    RunGUI()
-
+	_ = NewRelay()
 	//creates pet named john
 	pet := NewPet("john")
 	pet1 := NewPet("ronan")
