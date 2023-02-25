@@ -3,6 +3,7 @@ package main
 var time_to_quit chan struct{}
 
 func main() {
+	_ = NewRelay()
 	//creates pet named john
 	pet := NewPet("john")
 	pet1 := NewPet("ronan")
