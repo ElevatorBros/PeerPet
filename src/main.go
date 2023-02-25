@@ -7,7 +7,10 @@ func main() {
 
 	path := CreateDataDir()
 
-	_ = WritePetToJson(pet, path)
+	err := WritePetToJson(pet, path)
+	if err != nil {
+		log.Print(err.Error())
+	}
 
 	pets := ReadPets(path)
 

@@ -20,7 +20,8 @@ type Pet struct {
 	Constituton  int `json:"constition"`
 	Intelligence int `json:"intelligence"`
 
-	Dob time.Time `json:"dob"`
+	Dob        time.Time `json:"dob"`
+	SpritePath []string  `json:"spritepath"`
 }
 
 func NewPet(name string) *Pet {
@@ -28,6 +29,7 @@ func NewPet(name string) *Pet {
 
 	pet.Name = name
 	pet.Dob = time.Now()
+	pet.SpritePath = []string{"aa"}
 
 	pet.Hunger = 25
 	pet.Thirst = 25
@@ -62,20 +64,19 @@ func (pet Pet) AdvanceEnergy(value float32) {
 	pet.Energy -= value
 }
 
-func WritePetToJson(pet *Pet, path string) error {
-	data, _ := Jsonify(pet)
-	//handle error
-	err := os.WriteFile(path+pet.Name+".json", data, fs.FileMode(0644))
-
-	return err
-}
-
 func Jsonify(pet *Pet) (petJson []byte, e error) {
 	return json.Marshal(pet)
 }
 
 func UnJsonify(data []byte, pet *Pet) error {
 	return json.Unmarshal(data, pet)
+}
+
+func WritePetToJson(pet *Pet, path string) error {
+	data, _ := Jsonify(pet)
+	//handle error
+	err := os.WriteFile(path+pet.Name+".json", data, fs.FileMode(0644))
+	return err
 }
 
 func ReadPets(folder_path string) []Pet {
@@ -93,14 +94,17 @@ func ReadPets(folder_path string) []Pet {
 
 	for _, filename := range files {
 		file, err := os.Open(folder.Name() + "/" + filename.Name())
-		// log.Fatal(file.Name())
+		log.Print(folder.Name() + "\n")
+		log.Print(file.Name() + "\n")
 		defer file.Close()
 		if err != nil {
 			panic(err)
 		}
+
 		var data = []byte{}
-		pet := new(Pet)
 		file.Read(data)
+
+		pet := new(Pet)
 		err = UnJsonify(data, pet)
 		if err != nil {
 			panic(err)
