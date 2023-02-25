@@ -3,7 +3,8 @@ package main
 import (
 	// "fmt"
 	// "log"
-	// "unicode/utf8"
+	"fmt"
+
 	"github.com/bennicholls/burl-E/reximage"
 	tc "github.com/gdamore/tcell/v2"
 	tv "github.com/rivo/tview"
@@ -12,26 +13,22 @@ import (
 
 var display tv.Application
 const LEFT_SIZE = 40 
-// var style tv.Styles
 
-func draw_xp_image(offsetX int, offsetY int, image reximage.ImageData) {
-    // for x := 0; x < image.Width; x++ {
-    //     for y := 0; y < image.Height; y++ {
-    //         cell, _ := image.Getc(x, y)
-    //         forground_cell_color := tc.NewRGBColor(int32(cell.R_f), int32(cell.G_f), int32(cell.B_f))
-    //         background_cell_color := tc.NewRGBColor(int32(cell.R_b), int32(cell.G_b), int32(cell.B_b))
-    //         
-    //         color_style := tc.StyleDefault.Background(background_cell_color).Foreground(forground_cell_color)
-    //         cell_rune, _ := utf8.DecodeRuneInString(string(cell.Glyph))
-    //         display.SetContent(offsetX + x, offsetY + y, cell_rune, nil, color_style)
-    //     }
-    // }
-}
+func draw_xp_image(display *tv.Table, offsetX int, offsetY int, image reximage.ImageData) {
+    for x := 0; x < image.Width; x++ {
+        for y := 0; y < image.Height; y++ {
+            img_cell, _ := image.GetCell(x, y)
+            fg_col := tc.NewRGBColor(int32(img_cell.R_f), int32(img_cell.G_f), int32(img_cell.B_f))
+            bg_col := tc.NewRGBColor(int32(img_cell.R_b), int32(img_cell.G_b), int32(img_cell.B_b))
+            
+            color_style := tc.StyleDefault.Background(bg_col).Foreground(fg_col)
 
-func draw_text(x int, y int, text string) {
-    // for i := 0; i < utf8.RuneCountInString(text); i++ {
-    //     display.SetContent(x + i, y, rune(text[i]), nil, def_style)
-    // }
+            cell := tv.NewTableCell(fmt.Sprintf("%c", img_cell.Glyph))
+            cell.SetStyle(color_style)
+
+            display.SetCell(offsetY + y, offsetX + x, cell)
+        }
+    }
 }
 
 func draw(page int, pet Pet) {
@@ -95,14 +92,21 @@ func Init(input chan tc.Key) {
 }
 
 func RunGUI() {
-    pet_box := tv.NewBox().SetBorder(true).SetTitle("Pet")
+    pet_box := tv.NewTable()
+    pet_box.SetBorder(true).SetTitle("Title")
     message_box := tv.NewBox().SetBorder(true).SetTitle("Message")
     left_flex := tv.NewFlex().SetDirection(tv.FlexRow).
         AddItem(pet_box, 0, 2, false).
         AddItem(message_box, 0, 1, false)
 
+    image, _ := reximage.Import("./rec/pet1.xp")
+    offsetY, offsetX, _, _ := pet_box.GetInnerRect()
+
+    draw_xp_image(pet_box, offsetX, offsetY, image)
+
     flex := tv.NewFlex().
         AddItem(left_flex, 0, 1, false)
+    flex.SetBackgroundColor(tc.ColorDefault)
 
 	if err := tv.NewApplication().SetRoot(flex, true).Run(); err != nil {
 		panic(err)
