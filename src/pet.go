@@ -19,6 +19,19 @@ type Pet struct {
 	Dob time.Time
 }
 
-func jsonify(pet *Pet) (petJson []byte, e error) {
+func NewPet(name string) *Pet {
+	pet := new(Pet)
+
+	pet.Name = name
+
+	return pet
+}
+
+func Randomize() int {
+
+	return val
+}
+
+func Jsonify(pet *Pet) (petJson []byte, e error) {
 	return json.Marshal(pet)
 }
