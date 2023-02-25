@@ -26,17 +26,23 @@ func NewPet(name string) *Pet {
 	pet.Name = name
 	pet.Dob = time.Now()
 
-	power := RandomizeStats()
+	pet.Hunger = 25
+	pet.Thirst = 25
+	pet.Energy = 100
+
+	RandomizeStats(&pet.Strength, &pet.Dexterity, &pet.Constituton, &pet.Intelligence)
 
 	return pet
 }
 
-func RandomizeStats(p) {
-	val := 0
-	return val
+func RandomizeStats(strength *int, dexterity *int, constition *int, intelligence *int) {
+	rand.NewSource(time.Now().UnixNano())
+
+	//power := rand.Int(400) + 300
+
 }
 
-func Jsonify(pet *Pet) (petJson []byte, e error) {
+func Jsonify(pet []Pet) (petJson []byte, e error) {
 	return json.Marshal(pet)
 }
 
