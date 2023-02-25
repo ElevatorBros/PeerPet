@@ -56,9 +56,9 @@ func Jsonify(pet []Pet) (petJson []byte, e error) {
 	return json.Marshal(pet)
 }
 
-func WritePetToJson(pet []Pet) error {
+func WritePetToJson(pet []Pet, path string) error {
 	data, _ := Jsonify(pet)
-	err := os.WriteFile("pets.json", data, fs.FileMode(0644))
+	err := os.WriteFile(path, data, fs.FileMode(0644))
 
 	return err
 }
