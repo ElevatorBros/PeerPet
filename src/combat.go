@@ -1,9 +1,7 @@
 package main
 
 import (
-	"bufio"
 	"log"
-	"os"
 	"sync"
 	"time"
 
@@ -134,7 +132,7 @@ func Combat() {
 		go ReceiveAttack(&data)
 
 		// THE ATTACK BUTTON CALLS THIS
-		go SendAttack()
+		go SendAttack("Your mom")
 
 		// waits for goroutines to send done signal
 		wg.Wait()

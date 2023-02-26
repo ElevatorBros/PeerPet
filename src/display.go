@@ -3,17 +3,18 @@ package main
 import (
 	// "fmt"
 	// "log"
-//	"fmt"
+	"fmt"
 
-//	"github.com/bennicholls/burl-E/reximage"
+	"github.com/bennicholls/burl-E/reximage"
 	tc "github.com/gdamore/tcell/v2"
 	tv "github.com/rivo/tview"
 )
 
 
-var app tv.Application
+var app *tv.Application
+var context int
 const LEFT_SIZE = 40 
-/*
+
 func DrawXP(display *tv.Table, offsetX int, offsetY int, image reximage.ImageData) {
     for x := 0; x < image.Width; x++ {
         for y := 0; y < image.Height; y++ {
@@ -30,199 +31,69 @@ func DrawXP(display *tv.Table, offsetX int, offsetY int, image reximage.ImageDat
     }
 }
 
-func drawPet(page int, pet Pet) {
-    // numbers
-    // draw_text(5, 1, "1    2    3    4    5")
-    // display.SetContent(5*page + 4, 1, '[', nil, def_style)
-    // display.SetContent(5*page + 6, 1, ']', nil, def_style)
-    //
-    // switch page {
-    //     case 0: 
-    //         // Pet Image
-    //         image, err := reximage.Import("./rec/pet1.xp")
-    //         if err != nil {
-    //             log.Fatalf("%+v", err)
-    //         }
-    //         draw_xp_image(0, 3, image)
-    //
-    //         // Stats
-    //         draw_text(20, 4, "     Name : " + pet.Name)
-    //         draw_text(20, 6, "Happiness : " + "Fix Orestest")
-    //         draw_text(20, 7, "   Hunger : " + fmt.Sprintf("%v", pet.Hunger))
-    //         draw_text(20, 8, "   Energy : " + fmt.Sprintf("%v", pet.Energy))
-    //         draw_text(20, 9, "   Thirst : " + fmt.Sprintf("%v", pet.Thirst))
-    // }
-    //
-    // display.Show()
-}
-
-func Init(input chan tc.Key) {
- //    def_style = tc.StyleDefault
- //    var err error
- //    display, err = tc.NewScreen()
-	// if err != nil {
-	// 	log.Fatalf("%+v", err)
-	// }
-	// if err := display.Init(); err != nil {
-	// 	log.Fatalf("%+v", err)
-	// }
-	//
- //    display.SetStyle(def_style)
- //    display.Clear()
-	//
- //    go func() {
- //        for {
- //            // Poll event
- //            ev := display.PollEvent()
-	//
- //            // Process event
- //            switch ev := ev.(type) {
- //            case *tc.EventResize:
- //                display.Sync()
- //            case *tc.EventKey:
- //                if ev.Key() == tc.KeyEscape || ev.Rune() == 'q' {
- //                    close(time_to_quit)
- //                    return
- //                }
- //                input <- ev.Key()
- //            }
- //        }
- //    }()
-}
-
-func MonitorInput(e *tc.EventKey) *tc.EventKey {
-    // Put your funny code here josh
-
-    return e;
-}
-
-
-func RunGUI() {
-    app := tv.NewApplication()
-
-    pet_table := tv.NewTable()
-    pet_table.SetBorder(true).SetTitle("Pet")
-    
-    message_box := tv.NewBox()
-    message_box.SetBorder(true).SetTitle("Message")
-    
-    stats_box := tv.NewTable()
-    stats_box.SetBorder(true).SetTitle("Stats")
-
-    left_flex := tv.NewFlex()
-    left_flex.SetDirection(tv.FlexRow).
-        AddItem(pet_table, 0, 5, false).
-        AddItem(message_box, 0, 1, false).
-        AddItem(stats_box, 0, 4, false)
-
-    game_flex := tv.NewFlex()
-    game_flex.SetBorder(true).SetTitle("Games")
-
-
-    typing_button := tv.NewButton("Typing")
-    typing_button.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
-        if game_flex.HasFocus() {
+func TabbableSupport(w *tv.Flex) *tv.Flex {
+    context = 0
+    w.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
+        if w.HasFocus() {
             // Movement
             switch e.Key() {
-            case tc.KeyEnter:
-                tmp := NewPet("hi")
-                field := typing(tmp)
-                game_flex.AddItem(field, 0, 2, true)
+            case tc.KeyTab:
+                context += 1
+                context %= w.GetItemCount()
+                app.SetFocus(w.GetItem(context))
             }
         }
-
-
 		return e
-	})
+	})    
+    return w
+}
+
+func RunGUI() {
+    app = tv.NewApplication()
+    main := tv.NewFlex()
+    combat_setup := tv.NewFlex()
+    combat_actual := tv.NewFlex()
+    combat_host_or_client := tv.NewFlex()
+    combat_host_form := tv.NewForm()
+    combat_client_form := tv.NewForm()
+    pages := tv.NewPages()
+
+    TabbableSupport(main)
 
     roullette_button := tv.NewButton("Roullette")
     roullette_button.Focus(func(p tv.Primitive) {
         roullette_button.SetBackgroundColor(tc.ColorBlue)
     })
 
-    game_flex.AddItem(typing_button, 0, 1, false)
-    game_flex.AddItem(roullette_button, 0, 1, false)
-
-
-    context := 0
-    game_flex.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
-        if game_flex.HasFocus() {
-            // Movement
-            switch e.Key() {
-            case tc.KeyTab:
-                context += 1
-                context %= game_flex.GetItemCount()
-                app.SetFocus(game_flex.GetItem(context))
-            }
-        }
-
-
-		return e
-	})
-    
-    right_flex := tv.NewFlex()
-    right_flex.SetDirection(tv.FlexRow).
-        AddItem(game_flex, 0, 1, false)
-
-    image, _ := reximage.Import("./rec/pet1.xp")
-    offsetY, offsetX, _, _ := pet_table.GetInnerRect()
-
-    DrawXP(pet_table, offsetX, offsetY, image)
-
-    flex := tv.NewFlex().
-        AddItem(left_flex, 0, 2, false).
-        AddItem(right_flex, 0, 3, false)
-
-    flex.SetBackgroundColor(tc.ColorDefault)
-
-
-
-	if err := app.SetRoot(flex, true).Run(); err != nil {
-		panic(err)
-	}
-}
-*/
-
-
-func RunGUI() {
-    app := tv.NewApplication()
-
-    typing_button := tv.NewButton("Typing")
-    typing_button.SetBorder(true)
-
-    typing_button.SetSelectedFunc(func() {
-        tmp := NewPet("hi")
-        input := typing(tmp)
-        app.SetRoot(input, true)
+    combat_button := tv.NewButton("Combat")
+    combat_button.SetSelectedFunc(func() {
+        pages.SwitchToPage("combat_host_or_client")
     })
 
+    TabbableSupport(combat_host_or_client)
 
-    roullette_button := tv.NewButton("Roullette")
-    roullette_button.SetBorder(true)
+    host_button := tv.NewButton("host")
+    client_button := tv.NewButton("client")
+    combat_host_or_client.AddItem(host_button, 0, 1, false)
+    combat_host_or_client.AddItem(client_button, 0, 1, false)
 
-    flex := tv.NewFlex()
-    flex.SetBorder(true)
-    flex.SetTitle("Games")
-    
-    flex.AddItem(typing_button, 0, 1, true)
-    flex.AddItem(roullette_button, 0, 1, false)
-
-    context := 0
-    flex.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
-        if flex.HasFocus() {
-            // Movement
-            switch e.Key() {
-            case tc.KeyTab:
-                context += 1
-                context %= flex.GetItemCount()
-                app.SetFocus(flex.GetItem(context))
-            }
-        }
-        return e
+    host_button.SetSelectedFunc(func() {
+        combat_setup.AddItem(combat_host_form, 0, 1, true)
+    })
+    client_button.SetSelectedFunc(func() {
+        combat_setup.AddItem(combat_client_form, 0, 1, true)
     })
 
+    main.AddItem(combat_button, 0, 1, true)
+    main.AddItem(roullette_button, 0, 1, false)
 
-	if err := app.SetRoot(flex, true).Run(); err != nil {
+    pages.AddPage("main", main, true, true)
+    pages.AddPage("combat_host_or_client", combat_host_or_client, true, false)
+    pages.AddPage("combat_setup", combat_setup, true, false)
+    pages.AddPage("combat_actual", combat_actual, true, false)
+
+    app.SetRoot(pages, true)
+	if err := app.Run(); err != nil {
 		panic(err)
 	}
 }
