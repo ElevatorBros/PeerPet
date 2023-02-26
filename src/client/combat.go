@@ -1,5 +1,10 @@
+<<<<<<< HEAD:src/client/combat.go
 package client
 
+=======
+package main
+/*
+>>>>>>> 32edd7b (For Ronan):src/combat.go
 import (
 	"bufio"
 	"log"
@@ -191,3 +196,4 @@ func WaitForReceive(duration float64) []byte {
 	}
 	return data
 }
+*/
