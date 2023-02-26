@@ -32,7 +32,7 @@ func Server() {
 
 func Client() {
 	//creates pet named john
-	pet := common.NewPet("john")
+	pet := common.NewPet("pet")
 	//makes sure storing directory exists and returns path
 	//folder_path := server.CreateDataDir()
 
@@ -50,4 +50,5 @@ func Client() {
 	//for _, thing := range pets {
 	//	thing.Print()
 	//}
+	client.RunGUI()
 }
