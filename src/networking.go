@@ -8,6 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/schollz/croc/v9/src/comm"
 	"github.com/schollz/croc/v9/src/tcp"
+	"github.com/schollz/logger"
 )
 
 type Relay struct {
@@ -29,6 +30,7 @@ func (r *Relay) JoinRoom(shared_secret string) (*comm.Comm, error) {
 }
 
 func NewRelay() *Relay {
+	logger.SetLevel("error")
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Could not load .env file")
 	}
