@@ -3,9 +3,9 @@ package main
 import (
 	// "fmt"
 	// "log"
-	"fmt"
+//	"fmt"
 
-	"github.com/bennicholls/burl-E/reximage"
+//	"github.com/bennicholls/burl-E/reximage"
 	tc "github.com/gdamore/tcell/v2"
 	tv "github.com/rivo/tview"
 )
@@ -13,7 +13,7 @@ import (
 
 var app tv.Application
 const LEFT_SIZE = 40 
-
+/*
 func DrawXP(display *tv.Table, offsetX int, offsetY int, image reximage.ImageData) {
     for x := 0; x < image.Width; x++ {
         for y := 0; y < image.Height; y++ {
@@ -115,34 +115,6 @@ func RunGUI() {
         AddItem(message_box, 0, 1, false).
         AddItem(stats_box, 0, 4, false)
 
-    /*
-    game_grid := tv.NewGrid()
-    game_grid.SetColumns(8)
-    game_grid.SetBorder(true).SetTitle("Games")
-
-    game_grid.AddItem(tv.NewTextView().
-			SetTextAlign(tv.AlignCenter).
-			SetText("Typing"), 0, 0, 1, 3, 0, 0, false)
-
-
-    game_grid.AddItem(tv.NewTextView().
-			SetTextAlign(tv.AlignCenter).
-			SetText("Roullette"), 0, 4, 1, 3, 0, 0, false).
-            SetBorderColor(tc.ColorRed)
-
-    context := 0
-    game_grid.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
-		// Movement
-		switch e.Key() {
-		case tc.KeyTab:
-            context += 1
-		}
-
-        game_grid.SetTitleColor(tc.ColorRed)
-
-		return e
-	})
-    */
     game_flex := tv.NewFlex()
     game_flex.SetBorder(true).SetTitle("Games")
 
@@ -203,6 +175,51 @@ func RunGUI() {
 
     flex.SetBackgroundColor(tc.ColorDefault)
 
+
+
+	if err := app.SetRoot(flex, true).Run(); err != nil {
+		panic(err)
+	}
+}
+*/
+
+
+func RunGUI() {
+    app := tv.NewApplication()
+
+    typing_button := tv.NewButton("Typing")
+    typing_button.SetBorder(true)
+
+    typing_button.SetSelectedFunc(func() {
+        tmp := NewPet("hi")
+        input := typing(tmp)
+        app.SetRoot(input, true)
+    })
+
+
+    roullette_button := tv.NewButton("Roullette")
+    roullette_button.SetBorder(true)
+
+    flex := tv.NewFlex()
+    flex.SetBorder(true)
+    flex.SetTitle("Games")
+    
+    flex.AddItem(typing_button, 0, 1, true)
+    flex.AddItem(roullette_button, 0, 1, false)
+
+    context := 0
+    flex.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
+        if flex.HasFocus() {
+            // Movement
+            switch e.Key() {
+            case tc.KeyTab:
+                context += 1
+                context %= flex.GetItemCount()
+                app.SetFocus(flex.GetItem(context))
+            }
+        }
+        return e
+    })
 
 
 	if err := app.SetRoot(flex, true).Run(); err != nil {
