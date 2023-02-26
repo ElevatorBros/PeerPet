@@ -58,7 +58,7 @@ func (pet Pet) ProgressHunger(value float32) {
 // Progresses Thirst
 func (pet Pet) ProgressThirst(value float32) {
 	time.Sleep(5 * time.Second)
-	pet.Hunger += value
+	pet.Thirst += value
 }
 
 // Progresses Energy
