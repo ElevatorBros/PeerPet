@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bc8e1e5 (typing game!)
 package main
 
 =======
@@ -16,7 +19,11 @@ import (
 )
 
 // typing
+<<<<<<< HEAD
 func typing(pet *Pet) *tv.InputField {
+=======
+func typing(w *tv.Flex, pet *Pet) {
+>>>>>>> bc8e1e5 (typing game!)
     quote_file, err := os.ReadFile("./rec/quotes.txt")
     if err != nil { panic(err) }
 
@@ -35,6 +42,7 @@ func typing(pet *Pet) *tv.InputField {
         lastMessage = text
     })
     inputField.SetAcceptanceFunc(func(textToCheck string, lastChar rune) bool {
+<<<<<<< HEAD
         if i < len(quote) {
             return lastChar == rune(quote[i])
         } else {
@@ -52,6 +60,21 @@ func typing(pet *Pet) *tv.InputField {
     })
 
     return inputField
+=======
+        return lastChar == rune(quote[i])
+    })
+    inputField.SetDoneFunc(func(key tc.Key) {
+        switch key {
+        case tc.KeyEnter:
+            // Change pet Intelligence
+            // pet.Intelligence += 2
+        case tc.KeyEscape:
+            // The tamagatchi will tell the user that they failed
+        }
+    })
+
+    w.AddItem(inputField, 0, 1, true)
+>>>>>>> bc8e1e5 (typing game!)
 }
 <<<<<<< HEAD
 <<<<<<< HEAD
