@@ -1,52 +1,46 @@
-package main 
+package main
 
 import (
-    "os"
-    "strings"
-    tc "github.com/gdamore/tcell/v2"
-    tv "github.com/rivo/tview"
+	"log"
+	"math/rand"
+	"os"
+	"strings"
+
+	tc "github.com/gdamore/tcell/v2"
+	tv "github.com/rivo/tview"
 )
 
-var quote_index = -1
-
-func get_input();
-
 // typing
-func typing(window tv.Box, pet *Pet) {
-    quote_file, _ := os.ReadFile("./rec/quotes.txt")
+func typing(w *tv.Flex, pet *Pet) {
+    quote_file, err := os.ReadFile("./rec/quotes.txt")
+    if err != nil { panic(err) }
+
     quote_string := string(quote_file[:])
     quotes := strings.Split(quote_string, "\n")
-    if quote_index == -1 {
-        quote_index = 1
-    }
+    quote := quotes[rand.Intn(len(quotes))]
+    var lastMessage string
+    i := 0
+    log.Print(quote)
 
-    quote := quotes[quote_index]
-    var input rune[]
-    for 1 {
-        missing := false
-        for int c = 0; c < len(quote); c++ {
-            color = white
-            if c < len(input) {
-                if quote[c] != input[c] {
-                    color = red
-                    missing = true
-                } else {
-                    color = blue
-                }
-            }
-            display(quote[c])
+    quote = "your mom"
+    inputField := tv.NewInputField()
+    inputField.SetLabel("Typing!")
+    inputField.SetChangedFunc(func(text string) {
+        if len(lastMessage) < len(text) { i++ } else { i-- }
+        lastMessage = text
+    })
+    inputField.SetAcceptanceFunc(func(textToCheck string, lastChar rune) bool {
+        return lastChar == rune(quote[i])
+    })
+    inputField.SetDoneFunc(func(key tc.Key) {
+        switch key {
+        case tc.KeyEnter:
+            // Change pet Intelligence
+            // pet.Intelligence += 2
+        case tc.KeyEscape:
+            // The tamagatchi will tell the user that they failed
         }
+    })
 
-        if !missing && len(input) == len(quote) {
-            break
-        }
-       
-        in := get_input()
-        if in == backspace {
-            input = input[:len(input)-1]
-        } else if ascii {
-            input = append(input, in)
-        }
-
-    }
+    w.AddItem(inputField, 0, 1, true)
 }
