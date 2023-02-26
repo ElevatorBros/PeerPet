@@ -9,7 +9,11 @@ package main
 =======
 package main
 /*
+<<<<<<< HEAD
 >>>>>>> 32edd7b (For Ronan):src/combat.go
+=======
+>>>>>>> c82890aa8295a2183fe8a9f0c6c32ba2c87b32fb:src/combat.go
+>>>>>>> 060f2543c8bac860d713e439db992da9793080dc
 import (
 	"bufio"
 	"log"
