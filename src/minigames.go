@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 package main
 
+=======
+package main 
+/*
+>>>>>>> e5565ce (combat buttons)
 import (
 	"log"
 	"math/rand"
@@ -50,8 +55,12 @@ func typing(pet *Pet) *tv.InputField {
 }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> aa205e1 (love you josh)
 =======
 >>>>>>> 915ade6 (ronna can edit his code now)
+=======
+*/
+>>>>>>> e5565ce (combat buttons)

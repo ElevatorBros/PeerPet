@@ -147,6 +147,7 @@ func RunGUI() {
     game_flex.SetBorder(true).SetTitle("Games")
 
 
+<<<<<<< HEAD
     typing_button := tv.NewButton("Typing")
     typing_button.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
         if game_flex.HasFocus() {
@@ -158,10 +159,20 @@ func RunGUI() {
                 game_flex.AddItem(field, 0, 2, true)
             }
         }
+=======
+    typing_box := tv.NewButton("Join")
+    typing_box.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
+		// Movement
+		switch e.Key() {
+		case tc.KeyEnter:
+            EnterCombat(false)   
+		}
+>>>>>>> e5565ce (combat buttons)
 
 
 		return e
 	})
+<<<<<<< HEAD
 
     roullette_button := tv.NewButton("Roullette")
     roullette_button.Focus(func(p tv.Primitive) {
@@ -170,10 +181,31 @@ func RunGUI() {
 
     game_flex.AddItem(typing_button, 0, 1, false)
     game_flex.AddItem(roullette_button, 0, 1, false)
+=======
+    roullette_box := tv.NewButton("Host")
+    roullette_box.Focus(func(p tv.Primitive) {
+        roullette_box.SetBackgroundColor(tc.ColorBlue)
+    })
+    roullette_box.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
+		// Movement
+		switch e.Key() {
+		case tc.KeyEnter:
+            EnterCombat(true)   
+		}
+
+
+		return e
+	})
+    //roullette_box.SetBackgroundColor(tc.ColorRed)
+
+    game_flex.AddItem(typing_box, 0, 1, false)
+    game_flex.AddItem(roullette_box, 0, 1, false)
+>>>>>>> e5565ce (combat buttons)
 
 
     context := 0
     game_flex.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
+<<<<<<< HEAD
         if game_flex.HasFocus() {
             // Movement
             switch e.Key() {
@@ -184,6 +216,16 @@ func RunGUI() {
             }
         }
 
+=======
+		// Movement
+		switch e.Key() {
+		case tc.KeyTab:
+            context += 1
+		}
+
+        context %= game_flex.GetItemCount()
+        app.SetFocus(game_flex.GetItem(context))
+>>>>>>> e5565ce (combat buttons)
 
 		return e
 	})
@@ -204,7 +246,10 @@ func RunGUI() {
     flex.SetBackgroundColor(tc.ColorDefault)
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e5565ce (combat buttons)
 	if err := app.SetRoot(flex, true).Run(); err != nil {
 		panic(err)
 	}
