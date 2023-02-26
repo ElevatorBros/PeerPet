@@ -156,6 +156,7 @@ func RunGUI() {
             switch e.Key() {
             case tc.KeyEnter:
                 tmp := NewPet("hi")
+<<<<<<< HEAD
                 field := typing(tmp)
                 game_flex.AddItem(field, 0, 2, true)
             }
@@ -174,6 +175,11 @@ func RunGUI() {
             typing(&game_flex, &tmp)
 		}
 >>>>>>> e5565ce (combat buttons)
+=======
+                typing(game_flex, tmp)
+            }
+        }
+>>>>>>> 915ade6 (ronna can edit his code now)
 
 
 		return e
@@ -217,6 +223,9 @@ func RunGUI() {
     context := 0
     game_flex.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 915ade6 (ronna can edit his code now)
         if game_flex.HasFocus() {
             // Movement
             switch e.Key() {
@@ -226,6 +235,7 @@ func RunGUI() {
                 app.SetFocus(game_flex.GetItem(context))
             }
         }
+<<<<<<< HEAD
 
 =======
 		// Movement
@@ -237,6 +247,9 @@ func RunGUI() {
         context %= game_flex.GetItemCount()
         app.SetFocus(game_flex.GetItem(context))
 >>>>>>> e5565ce (combat buttons)
+=======
+
+>>>>>>> 915ade6 (ronna can edit his code now)
 
 		return e
 	})
@@ -258,9 +271,17 @@ func RunGUI() {
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> e5565ce (combat buttons)
+=======
+    tmp := NewPet("hi")
+    app.SetFocus(typing(flex, tmp))
+
+    
+    fmt.Println(app.GetFocus())
+>>>>>>> 915ade6 (ronna can edit his code now)
 	if err := app.SetRoot(flex, true).Run(); err != nil {
 		panic(err)
 	}

@@ -28,10 +28,14 @@ import (
 
 // typing
 <<<<<<< HEAD
+<<<<<<< HEAD
 func typing(pet *Pet) *tv.InputField {
 =======
 func typing(w *tv.Flex, pet *Pet) {
 >>>>>>> bc8e1e5 (typing game!)
+=======
+func typing(w *tv.Flex, pet *Pet) *tv.InputField {
+>>>>>>> 915ade6 (ronna can edit his code now)
     quote_file, err := os.ReadFile("./rec/quotes.txt")
     if err != nil { panic(err) }
 
@@ -89,6 +93,7 @@ func typing(w *tv.Flex, pet *Pet) {
     })
 
     w.AddItem(inputField, 0, 1, true)
+<<<<<<< HEAD
 >>>>>>> bc8e1e5 (typing game!)
 }
 <<<<<<< HEAD
@@ -106,3 +111,7 @@ func typing(w *tv.Flex, pet *Pet) {
 =======
 
 >>>>>>> aa205e1 (love you josh)
+=======
+    return inputField
+}
+>>>>>>> 915ade6 (ronna can edit his code now)
