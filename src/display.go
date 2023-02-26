@@ -148,6 +148,7 @@ func RunGUI() {
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     typing_button := tv.NewButton("Typing")
     typing_button.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
         if game_flex.HasFocus() {
@@ -162,10 +163,15 @@ func RunGUI() {
 =======
     typing_box := tv.NewButton("Join")
     typing_box.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
+=======
+    typing_button := tv.NewButton("Typing")
+    typing_button.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
+>>>>>>> 32edd7b (For Ronan)
 		// Movement
 		switch e.Key() {
 		case tc.KeyEnter:
-            EnterCombat(false)   
+            tmp := NewPet("hi")
+            typing(&game_flex, &tmp)
 		}
 >>>>>>> e5565ce (combat buttons)
 
@@ -173,10 +179,14 @@ func RunGUI() {
 		return e
 	})
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 32edd7b (For Ronan)
 
     roullette_button := tv.NewButton("Roullette")
     roullette_button.Focus(func(p tv.Primitive) {
         roullette_button.SetBackgroundColor(tc.ColorBlue)
+<<<<<<< HEAD
     })
 
     game_flex.AddItem(typing_button, 0, 1, false)
@@ -185,14 +195,11 @@ func RunGUI() {
     roullette_box := tv.NewButton("Host")
     roullette_box.Focus(func(p tv.Primitive) {
         roullette_box.SetBackgroundColor(tc.ColorBlue)
+=======
+>>>>>>> 32edd7b (For Ronan)
     })
-    roullette_box.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
-		// Movement
-		switch e.Key() {
-		case tc.KeyEnter:
-            EnterCombat(true)   
-		}
 
+<<<<<<< HEAD
 
 		return e
 	})
@@ -201,6 +208,10 @@ func RunGUI() {
     game_flex.AddItem(typing_box, 0, 1, false)
     game_flex.AddItem(roullette_box, 0, 1, false)
 >>>>>>> e5565ce (combat buttons)
+=======
+    game_flex.AddItem(typing_button, 0, 1, false)
+    game_flex.AddItem(roullette_button, 0, 1, false)
+>>>>>>> 32edd7b (For Ronan)
 
 
     context := 0

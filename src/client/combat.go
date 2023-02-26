@@ -1,6 +1,11 @@
 <<<<<<< HEAD:src/client/combat.go
+<<<<<<< HEAD:src/client/combat.go
 package client
 
+=======
+package main
+/*
+>>>>>>> 32edd7b (For Ronan):src/combat.go
 =======
 package main
 /*

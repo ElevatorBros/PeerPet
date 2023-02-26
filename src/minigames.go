@@ -3,11 +3,15 @@
 =======
 >>>>>>> bc8e1e5 (typing game!)
 package main
+<<<<<<< HEAD
 
 =======
 package main 
 /*
 >>>>>>> e5565ce (combat buttons)
+=======
+/*
+>>>>>>> 32edd7b (For Ronan)
 import (
 	"log"
 	"math/rand"
