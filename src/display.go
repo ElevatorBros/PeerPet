@@ -157,6 +157,7 @@ func RunGUI() {
             case tc.KeyEnter:
                 tmp := NewPet("hi")
 <<<<<<< HEAD
+<<<<<<< HEAD
                 field := typing(tmp)
                 game_flex.AddItem(field, 0, 2, true)
             }
@@ -177,6 +178,10 @@ func RunGUI() {
 >>>>>>> e5565ce (combat buttons)
 =======
                 typing(game_flex, tmp)
+=======
+                field := typing(tmp)
+                game_flex.AddItem(field, 0, 2, true)
+>>>>>>> c82890a (something)
             }
         }
 >>>>>>> 915ade6 (ronna can edit his code now)
@@ -272,6 +277,7 @@ func RunGUI() {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> e5565ce (combat buttons)
@@ -282,6 +288,9 @@ func RunGUI() {
     
     fmt.Println(app.GetFocus())
 >>>>>>> 915ade6 (ronna can edit his code now)
+=======
+
+>>>>>>> c82890a (something)
 	if err := app.SetRoot(flex, true).Run(); err != nil {
 		panic(err)
 	}

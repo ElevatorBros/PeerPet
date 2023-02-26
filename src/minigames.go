@@ -29,6 +29,7 @@ import (
 // typing
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 func typing(pet *Pet) *tv.InputField {
 =======
 func typing(w *tv.Flex, pet *Pet) {
@@ -36,6 +37,9 @@ func typing(w *tv.Flex, pet *Pet) {
 =======
 func typing(w *tv.Flex, pet *Pet) *tv.InputField {
 >>>>>>> 915ade6 (ronna can edit his code now)
+=======
+func typing(pet *Pet) *tv.InputField {
+>>>>>>> c82890a (something)
     quote_file, err := os.ReadFile("./rec/quotes.txt")
     if err != nil { panic(err) }
 
@@ -89,9 +93,9 @@ func typing(w *tv.Flex, pet *Pet) *tv.InputField {
         case tc.KeyEscape:
             // The tamagatchi will tell the user that they failed
         }
-        w.RemoveItem(inputField)
     })
 
+<<<<<<< HEAD
     w.AddItem(inputField, 0, 1, true)
 <<<<<<< HEAD
 >>>>>>> bc8e1e5 (typing game!)
@@ -112,6 +116,8 @@ func typing(w *tv.Flex, pet *Pet) *tv.InputField {
 
 >>>>>>> aa205e1 (love you josh)
 =======
+=======
+>>>>>>> c82890a (something)
     return inputField
 }
 >>>>>>> 915ade6 (ronna can edit his code now)
