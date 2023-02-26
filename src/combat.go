@@ -32,13 +32,46 @@ var my_pet Pet
 // if in combat
 var in_combat = true
 
-// TEMPORARY TERMINAL READER
-var reader = bufio.NewReader(os.Stdin)
+// room key
+var key string
 
 func EnterCombat(host bool) {
-	_, key := InitializeCombat()
 
+	//SET OR GET KEY BEFORE CALLING THIS FUNCTION
+
+	InitializeCombat()
+
+	InitializePets(host)
+
+	Combat()
+}
+
+func GetHostKey() string {
+	key = utils.GetRandomName()
+	return key
+}
+
+func SetClientKey(val string) {
+	key = val
+}
+
+func InitializeCombat() {
+	// initialize relay if not ready
+	if relay == nil {
+		relay = NewRelay()
+	}
+
+	// join room
+	temp_conn, err := relay.JoinRoom(key)
+	if err != nil {
+		panic(err)
+	}
+	connection = temp_conn
+}
+
+func InitializePets(host bool) {
 	// select my_pet
+	// DO SERVER GET PET INSTEAD OF THIS
 	pets := ReadPets()
 	if len(pets) == 0 {
 		// MAKE THIS IN GUI
@@ -48,53 +81,14 @@ func EnterCombat(host bool) {
 	// CHANGE 0 TO USER SELECTION
 	my_pet = pets[0]
 
-	// gets opponent's pet based on host or not
+	// THIS IS BLOCKING
+	// gets opponent's pet
 	var opponent_pet Pet
 	if host {
 		HostCombat(&opponent_pet)
 	} else {
 		JoinCombat(&opponent_pet)
 	}
-	log.Print(key)
-
-	log.Print("You are against this pet: ")
-	opponent_pet.Print()
-
-	Combat()
-}
-
-func InitializeCombat() (bool, string) {
-	// set host based on command args
-	host := false
-	if len(os.Args) == 2 && os.Args[1] == "-S" {
-		host = true
-	}
-
-	// initialize relay if not ready
-	if relay == nil {
-		relay = NewRelay()
-	}
-
-	// dispay or request room key
-	var key string
-	if host {
-		key = utils.GetRandomName()
-		log.Printf("ROOM KEY: %s\n", key)
-	} else {
-		log.Print("INPUT ROOM KEY: }")
-		text, _ := reader.ReadString('\n')
-		key = text
-		key = key[:len(key)-1]
-	}
-
-	// join room
-	temp_conn, err := relay.JoinRoom(key)
-	if err != nil {
-		panic(err)
-	}
-	connection = temp_conn
-
-	return host, key
 }
 
 // joins combat server-side
@@ -136,7 +130,10 @@ func Combat() {
 		//number of goroutine to wait to finish is 2
 		wg.Add(2)
 
+		// PASS IN THE CONTENT OF THE RECEIVE LABEL TO THIS
 		go ReceiveAttack(&data)
+
+		// THE ATTACK BUTTON CALLS THIS
 		go SendAttack()
 
 		// waits for goroutines to send done signal
@@ -158,24 +155,19 @@ func ReceiveAttack(data *[]byte) {
 	defer wg.Done()
 
 	*data = WaitForReceive(FOUR_HOURS)
-	//time.Sleep(5 * 1000 * time.Millisecond)
 }
 
 // send an attack
-func SendAttack() {
+func SendAttack(attack string) {
 	// sends done signal at end of function
 	defer wg.Done()
 
-	text, _ := reader.ReadString('\n')
-	data := []byte(text)
+	data := []byte(attack)
 
 	err := connection.Send(data)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	//time.Sleep(2 * 1000 * time.Millisecond)
-	log.Printf("DAMAGE SENT: %s\n", string(data[:]))
 }
 
 // wait for data to be received
