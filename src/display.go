@@ -11,6 +11,7 @@ import (
 )
 
 
+var app tv.Application
 const LEFT_SIZE = 40 
 
 func DrawXP(display *tv.Table, offsetX int, offsetY int, image reximage.ImageData) {
@@ -96,6 +97,7 @@ func MonitorInput(e *tc.EventKey) *tc.EventKey {
 }
 
 func RunGUI() {
+    app := tv.NewApplication()
     pet_table := tv.NewTable()
     pet_table.SetBorder(true).SetTitle("Pet")
     message_box := tv.NewBox().SetBorder(true).SetTitle("Message")
@@ -107,18 +109,23 @@ func RunGUI() {
         AddItem(message_box, 0, 1, false).
         AddItem(stats_box, 0, 4, false)
 
-    image, _ := reximage.Import("./rec/pet6.xp")
+    game_grid := tv.NewGrid()
+    game_grid.SetBorder(true).SetTitle("Games")
+    right_flex := tv.NewFlex().SetDirection(tv.FlexRow).
+        AddItem(game_grid, 0, 1, false)
+
+    image, _ := reximage.Import("./rec/pet1.xp")
     offsetY, offsetX, _, _ := pet_table.GetInnerRect()
 
     DrawXP(pet_table, offsetX, offsetY, image)
 
     flex := tv.NewFlex().
-        AddItem(left_flex, 0, 1, false)
+        AddItem(left_flex, 0, 2, false).
+        AddItem(right_flex, 0, 3, false)
+
     flex.SetBackgroundColor(tc.ColorDefault)
 
-    flex.SetInputCapture(MonitorInput)
-
-	if err := tv.NewApplication().SetRoot(flex, true).Run(); err != nil {
+	if err := app.SetRoot(flex, true).Run(); err != nil {
 		panic(err)
 	}
 }
