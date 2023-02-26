@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
+	"io/ioutil"
 	"net"
 	"net/http"
 
@@ -23,39 +23,33 @@ var udsClient = http.Client{
 	},
 }
 
-func ReadPet() (*common.Pet, error) {
+func GetPet() (*common.Pet, error) {
 	resp, err := udsClient.Get("http://unix/pet")
 	if err != nil {
 		return nil, err
 	}
-	respJson := &ReadPetJson{}
-	var data []byte
-	_, err = resp.Body.Read(data)
-	if err != nil {
-		return nil, err
-	}
+
+	respJson := new(common.Pet)
+
+	data, err := ioutil.ReadAll(resp.Body)
+
 	if err := json.Unmarshal(data, respJson); err != nil {
 		return nil, err
 	}
-	return &respJson.Pet, nil
+	return respJson, nil
 }
 
 func PostPet(pet *common.Pet) error {
-	petJson, err := pet.Jsonify()
+	data, err := (*pet).Jsonify()
 	if err != nil {
 		return err
 	}
-	reader := bytes.NewReader(petJson)
+
+	_, err = udsClient.Post("http://unix/pet", "application/json", bytes.NewReader(data))
+
 	if err != nil {
 		return err
 	}
-	resp, err := udsClient.Post("http://unix/pet", "application/json", reader)
-	if err != nil {
-		return err
-	}
-	var data []byte
-	if _, err := resp.Body.Read(data); err != nil {
-		return err
-	}
+
 	return nil
 }

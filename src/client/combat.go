@@ -35,15 +35,15 @@ var in_combat = true
 var key string
 
 func EnterCombat(host bool) {
-    log.Print("Start")
+	log.Print("Start")
 
 	//SET OR GET KEY BEFORE CALLING THIS FUNCTION
-key = "aa"
+	key = "aa"
 	InitializeCombat()
 
 	InitializePets(host)
 
-	// Combat()
+	Combat()
 }
 
 func GetHostKey() string {
@@ -60,14 +60,12 @@ func InitializeCombat() {
 	if relay == nil {
 		relay = NewRelay()
 	}
-    log.Print("Relay!!!!")
 
 	// join room
 	temp_conn, err := relay.JoinRoom(key)
 	if err != nil {
 		panic(err)
 	}
-    log.Print("Room!!!!!!!!!!!!!!!!!!!!!")
 	connection = temp_conn
 }
 
@@ -75,7 +73,7 @@ func InitializePets(host bool) {
 	// select my_pet
 	// DO SERVER GET PET INSTEAD OF THIS
 	var err error
-	my_pet, err = ReadPet()
+	my_pet, err = GetPet()
 	if err != nil {
 		panic(err)
 	}

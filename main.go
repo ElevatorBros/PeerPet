@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"peer.pet/src/client"
@@ -9,6 +10,13 @@ import (
 	"peer.pet/src/server"
 )
 
+func MyGetPet(c *gin.Context) {
+	server.GetPetGIN(c)
+}
+
+func MyPostPet(c *gin.Context) {
+	server.PostPetGIN(c)
+}
 func main() {
 	isServer := flag.Bool("s", false, "Run as server")
 	flag.Parse()
@@ -21,8 +29,9 @@ func main() {
 
 func Server() {
 	r := gin.Default()
-	r.GET("/pet", server.GetPet)
-	r.PUT("/pet", server.PostPet)
+	r.GET("/:pet", MyGetPet)
+	// FIXED THIS
+	r.POST("/:pet", MyPostPet)
 
 	if err := r.RunUnix("http.sock"); err != nil {
 		panic(err)
@@ -31,24 +40,32 @@ func Server() {
 }
 
 func Client() {
-	//creates pet named john
+	// FIXED THIS
 	pet := common.NewPet("pet")
-	//makes sure storing directory exists and returns path
-	//folder_path := server.CreateDataDir()
-
-	//serializes pet to json
 	err := client.PostPet(pet)
-	if err != nil {
-		panic(err)
+	if err == nil {
+
+		host := false
+		if len(os.Args) == 2 && os.Args[1] == "-S" {
+			host = true
+		}
+
+		if host {
+			client.GetHostKey()
+		} else {
+			client.GetHostKey()
+		}
+
+		client.EnterCombat(host)
+
+		//client.RunGUI()
+
+		//reads stored json files to pet array
+		//pets := ReadPets()
+
+		////prints pet array data
+		//for _, thing := range pets {
+		//	thing.Print()
+		//}
 	}
-	client.RunGUI()
-
-	//reads stored json files to pet array
-	//pets := ReadPets()
-
-	////prints pet array data
-	//for _, thing := range pets {
-	//	thing.Print()
-	//}
-	client.RunGUI()
 }

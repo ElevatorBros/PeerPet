@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/json"
 	"io/fs"
+	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -10,31 +11,27 @@ import (
 	"peer.pet/src/common"
 )
 
-type PostPetJson struct {
-	Pet common.Pet
-}
+func GetPetGIN(c *gin.Context) {
+	data, err := os.ReadFile(folder_path + "/pet.json")
+	errorCheck(c, err)
 
-func GetPet(c *gin.Context) {
-	folder, err := os.Open(folder_path)
-	errorCheck(c, err)
-	data, err := os.ReadFile(folder.Name() + "/pet.json")
-	errorCheck(c, err)
 	c.JSON(http.StatusOK, gin.H{
-		"pet": data,
+		"pet": Secret(data),
 	})
 }
 
-func PostPet(c *gin.Context) {
-	var data []byte
-	_, err := c.Request.Body.Read(data)
-	errorCheck(c, err)
-	jsonReq := &PostPetJson{}
-	err = json.Unmarshal(data, jsonReq)
-	errorCheck(c, err)
-	petJson, err := jsonReq.Pet.Jsonify()
-	errorCheck(c, err)
-	err = os.WriteFile(folder_path+"/pet.json", Secret(petJson), fs.FileMode(0644))
-	errorCheck(c, err)
+func PostPetGIN(c *gin.Context) {
+	data, err := ioutil.ReadAll(c.Request.Body)
+	err = os.WriteFile(folder_path+"/temp", data, fs.FileMode(0644))
+	if err != nil {
+		println(err.Error())
+	}
+
+	pet := new(common.Pet)
+	err = json.Unmarshal(data, pet)
+
+	err = os.WriteFile(folder_path+"/pet.json", Secret(data), fs.FileMode(0644))
+
 	c.AbortWithStatus(http.StatusOK)
 }
 
