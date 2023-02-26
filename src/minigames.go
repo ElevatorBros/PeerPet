@@ -47,11 +47,15 @@ func typing(w *tv.Flex, pet *Pet) {
     })
     inputField.SetAcceptanceFunc(func(textToCheck string, lastChar rune) bool {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 09915fe (typing game error checking)
         if i < len(quote) {
             return lastChar == rune(quote[i])
         } else {
             return false
         }
+<<<<<<< HEAD
     })
     inputField.SetDoneFunc(func(key tc.Key) {
         switch key {
@@ -66,6 +70,8 @@ func typing(w *tv.Flex, pet *Pet) {
     return inputField
 =======
         return lastChar == rune(quote[i])
+=======
+>>>>>>> 09915fe (typing game error checking)
     })
     inputField.SetDoneFunc(func(key tc.Key) {
         switch key {
@@ -75,6 +81,7 @@ func typing(w *tv.Flex, pet *Pet) {
         case tc.KeyEscape:
             // The tamagatchi will tell the user that they failed
         }
+        w.RemoveItem(inputField)
     })
 
     w.AddItem(inputField, 0, 1, true)
