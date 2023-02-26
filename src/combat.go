@@ -12,7 +12,7 @@ import (
 )
 
 // define 4 hours in seconds
-const FOUR_HOURS = 999999999999
+const FOUR_HOURS = 14400
 
 // version number
 var version_number = 0.0
@@ -35,11 +35,13 @@ var in_combat = true
 // TEMPORARY TERMINAL READER
 var reader = bufio.NewReader(os.Stdin)
 
-func main() {
-	host := false
-	if len(os.Args) == 2 && os.Args[1] == "-S" {
-		host = true
-	}
+func EnterCombat(host bool) {
+	/*
+		host := false
+		if len(os.Args) == 2 && os.Args[1] == "-S" {
+			host = true
+		}
+	*/
 
 	if relay == nil {
 		relay = NewRelay()
