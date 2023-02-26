@@ -154,7 +154,8 @@ func RunGUI() {
             switch e.Key() {
             case tc.KeyEnter:
                 tmp := NewPet("hi")
-                typing(game_flex, tmp)
+                field := typing(tmp)
+                game_flex.AddItem(field, 0, 2, true)
             }
         }
 
@@ -203,11 +204,7 @@ func RunGUI() {
     flex.SetBackgroundColor(tc.ColorDefault)
 
 
-    tmp := NewPet("hi")
-    app.SetFocus(typing(flex, tmp))
 
-    
-    fmt.Println(app.GetFocus())
 	if err := app.SetRoot(flex, true).Run(); err != nil {
 		panic(err)
 	}
