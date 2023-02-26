@@ -11,7 +11,7 @@ import (
 )
 
 // typing
-func typing(w *tv.Flex, pet *Pet) {
+func typing(w *tv.Flex, pet *Pet) *tv.InputField {
     quote_file, err := os.ReadFile("./rec/quotes.txt")
     if err != nil { panic(err) }
 
@@ -48,5 +48,5 @@ func typing(w *tv.Flex, pet *Pet) {
     })
 
     w.AddItem(inputField, 0, 1, true)
+    return inputField
 }
-

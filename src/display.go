@@ -149,12 +149,14 @@ func RunGUI() {
 
     typing_button := tv.NewButton("Typing")
     typing_button.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
-		// Movement
-		switch e.Key() {
-		case tc.KeyEnter:
-            tmp := NewPet("hi")
-            typing(&game_flex, &tmp)
-		}
+        if game_flex.HasFocus() {
+            // Movement
+            switch e.Key() {
+            case tc.KeyEnter:
+                tmp := NewPet("hi")
+                typing(game_flex, tmp)
+            }
+        }
 
 
 		return e
@@ -171,14 +173,16 @@ func RunGUI() {
 
     context := 0
     game_flex.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
-		// Movement
-		switch e.Key() {
-		case tc.KeyTab:
-            context += 1
-		}
+        if game_flex.HasFocus() {
+            // Movement
+            switch e.Key() {
+            case tc.KeyTab:
+                context += 1
+                context %= game_flex.GetItemCount()
+                app.SetFocus(game_flex.GetItem(context))
+            }
+        }
 
-        context %= game_flex.GetItemCount()
-        app.SetFocus(game_flex.GetItem(context))
 
 		return e
 	})
@@ -199,6 +203,11 @@ func RunGUI() {
     flex.SetBackgroundColor(tc.ColorDefault)
 
 
+    tmp := NewPet("hi")
+    app.SetFocus(typing(flex, tmp))
+
+    
+    fmt.Println(app.GetFocus())
 	if err := app.SetRoot(flex, true).Run(); err != nil {
 		panic(err)
 	}
