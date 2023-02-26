@@ -9,7 +9,7 @@ import (
 var folder_path string
 
 // Converts Pet to []bytes
-func Jsonify(pet *Pet) (petJson []byte, e error) {
+func Jsonify(pet Pet) (petJson []byte, e error) {
 	return json.Marshal(pet)
 }
 
@@ -20,7 +20,7 @@ func UnJsonify(data []byte, pet *Pet) error {
 
 // Writes []bytes to file
 func WritePetToJson(pet *Pet) error {
-	data, err := Jsonify(pet)
+	data, err := Jsonify(*pet)
 	if err != nil {
 		panic(err)
 	}
