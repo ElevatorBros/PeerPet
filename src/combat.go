@@ -24,13 +24,13 @@ var relay *Relay
 // connection
 var connection *comm.Comm
 
-// my pet
+// my pet (can be used in other parts of program maybe)
 var my_pet Pet
 
 // if in combat
 var in_combat = true
 
-func main() {
+func main1() {
 	if relay == nil {
 		relay = NewRelay()
 	}
@@ -41,15 +41,22 @@ func main() {
 	}
 	connection = temp_conn
 
-	my_pet = ReadPets()[0]
-
-	var host bool
-	if len(os.Args) == 1 {
-		host = true
-	} else {
-		host = false
+	pets := ReadPets()
+	if len(pets) == 0 {
+		// MAKE THIS IN GUI
+		log.Fatal("YOU HAVE NO PETS")
 	}
 
+	// CHANGE 0 TO USER SELECTION
+	my_pet = pets[0]
+
+	// HOST OR NOT
+	host := false
+	if os.Args[1] == "-S" {
+		host = true
+	}
+
+	// gets opponent's pet
 	var opponent_pet Pet
 	if host {
 		HostCombat(&opponent_pet)
@@ -58,15 +65,17 @@ func main() {
 	}
 
 	opponent_pet.Print()
-	//Combat()
+	Combat()
 }
 
+// joins combat server-side
 func HostCombat(opponent_pet *Pet) {
 	data := WaitForReceive(FOUR_HOURS)
 	UnJsonify(data, opponent_pet)
 	SendPet()
 }
 
+// joins combat client-side
 func JoinCombat(opponent_pet *Pet) {
 	SendPet()
 	data := WaitForReceive(5)
@@ -76,6 +85,7 @@ func JoinCombat(opponent_pet *Pet) {
 	UnJsonify(data, opponent_pet)
 }
 
+// sends my_pet to opponent
 func SendPet() {
 	data, err := Jsonify(my_pet)
 	if err != nil {
@@ -88,6 +98,7 @@ func SendPet() {
 	}
 }
 
+// main combat function
 func Combat() {
 	defer connection.Close()
 
@@ -104,6 +115,7 @@ func Combat() {
 	}
 }
 
+// wait for attack to be received
 func ReceiveAttack() []byte {
 	// sends done signal at end of function
 	defer wg.Done()
@@ -115,6 +127,7 @@ func ReceiveAttack() []byte {
 	return data
 }
 
+// send an attack
 func SendAttack(data []byte) {
 	// sends done signal at end of function
 	defer wg.Done()
@@ -128,6 +141,7 @@ func SendAttack(data []byte) {
 	log.Printf("%s\n", string(data[:]))
 }
 
+// wait for data to be received
 func WaitForReceive(duration float64) []byte {
 	start := time.Now()
 	var data []byte
