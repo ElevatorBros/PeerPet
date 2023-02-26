@@ -11,7 +11,7 @@ import (
 )
 
 // typing
-func typing(w *tv.Flex, pet *Pet) {
+func typing(pet *Pet) *tv.InputField {
     quote_file, err := os.ReadFile("./rec/quotes.txt")
     if err != nil { panic(err) }
 
@@ -30,7 +30,11 @@ func typing(w *tv.Flex, pet *Pet) {
         lastMessage = text
     })
     inputField.SetAcceptanceFunc(func(textToCheck string, lastChar rune) bool {
-        return lastChar == rune(quote[i])
+        if i < len(quote) {
+            return lastChar == rune(quote[i])
+        } else {
+            return false
+        }
     })
     inputField.SetDoneFunc(func(key tc.Key) {
         switch key {
@@ -42,6 +46,5 @@ func typing(w *tv.Flex, pet *Pet) {
         }
     })
 
-    w.AddItem(inputField, 0, 1, true)
+    return inputField
 }
-*/
