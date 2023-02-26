@@ -21,10 +21,13 @@ func (r *Relay) JoinRoom(shared_secret string) (*comm.Comm, error) {
 	if err != nil || len(ipaddr) < 1 {
 		log.Fatal(err)
 	}
+	stderr := os.Stderr
+	os.Stderr = nil
 	comm, _, _, err := tcp.ConnectToTCPServer(net.JoinHostPort(ipaddr[0], r.port), r.password, shared_secret)
 	if err != nil {
 		return nil, err
 	}
+	os.Stderr = stderr
 	return comm, err
 }
 
