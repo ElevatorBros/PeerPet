@@ -1,10 +1,15 @@
 <<<<<<< HEAD:src/client/combat.go
+<<<<<<< HEAD:src/client/combat.go
 package client
 
 =======
 package main
 /*
 >>>>>>> 32edd7b (For Ronan):src/combat.go
+=======
+package main
+/*
+>>>>>>> c82890aa8295a2183fe8a9f0c6c32ba2c87b32fb:src/combat.go
 import (
 	"bufio"
 	"log"
