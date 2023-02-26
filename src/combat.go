@@ -1,12 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"log"
 	"os"
 	"sync"
 	"time"
 
 	"github.com/schollz/croc/v9/src/comm"
+	"github.com/schollz/croc/v9/src/utils"
 )
 
 // define 4 hours in seconds
@@ -30,12 +32,31 @@ var my_pet Pet
 // if in combat
 var in_combat = true
 
-func main1() {
+// TEMPORARY TERMINAL READER
+var reader = bufio.NewReader(os.Stdin)
+
+func main() {
+	host := false
+	if len(os.Args) == 2 && os.Args[1] == "-S" {
+		host = true
+	}
+
 	if relay == nil {
 		relay = NewRelay()
 	}
 
-	temp_conn, err := relay.JoinRoom("abc123")
+	var key string
+	if host {
+		key = utils.GetRandomName()
+		log.Printf("ROOM KEY: %s\n", key)
+	} else {
+		log.Print("INPUT ROOM KEY: }")
+		text, _ := reader.ReadString('\n')
+		key = text
+		key = key[:len(key)-1]
+	}
+
+	temp_conn, err := relay.JoinRoom(key)
 	if err != nil {
 		panic(err)
 	}
@@ -51,11 +72,6 @@ func main1() {
 	my_pet = pets[0]
 
 	// HOST OR NOT
-	host := false
-	if os.Args[1] == "-S" {
-		host = true
-	}
-
 	// gets opponent's pet
 	var opponent_pet Pet
 	if host {
@@ -63,6 +79,7 @@ func main1() {
 	} else {
 		JoinCombat(&opponent_pet)
 	}
+	log.Print(key)
 
 	opponent_pet.Print()
 	Combat()
@@ -107,7 +124,7 @@ func Combat() {
 		wg.Add(2)
 
 		go ReceiveAttack()
-		go SendAttack([]byte("A message"))
+		go SendAttack()
 
 		// waits for goroutines to send done signal
 		wg.Wait()
@@ -128,9 +145,12 @@ func ReceiveAttack() []byte {
 }
 
 // send an attack
-func SendAttack(data []byte) {
+func SendAttack() {
 	// sends done signal at end of function
 	defer wg.Done()
+
+	text, _ := reader.ReadString('\n')
+	data := []byte(text)
 
 	err := connection.Send(data)
 	if err != nil {
