@@ -11,7 +11,7 @@ import (
 )
 
 // typing
-func typing(w *tv.Flex, pet *Pet) *tv.InputField {
+func typing(pet *Pet) *tv.InputField {
     quote_file, err := os.ReadFile("./rec/quotes.txt")
     if err != nil { panic(err) }
 
@@ -44,10 +44,8 @@ func typing(w *tv.Flex, pet *Pet) *tv.InputField {
         case tc.KeyEscape:
             // The tamagatchi will tell the user that they failed
         }
-        w.RemoveItem(inputField)
     })
 
-    w.AddItem(inputField, 0, 1, true)
     return inputField
 }
 <<<<<<< HEAD
