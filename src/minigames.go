@@ -1,5 +1,5 @@
 package main
-/*
+
 import (
 	"log"
 	"math/rand"
@@ -49,4 +49,4 @@ func typing(w *tv.Flex, pet *Pet) {
 
     w.AddItem(inputField, 0, 1, true)
 }
-*/
+
