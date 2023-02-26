@@ -1,14 +1,10 @@
-package main
+package server
 
 import (
 	"fmt"
 	"log"
 	"os"
 )
-
-func dMain() {
-	CreateDataDir()
-}
 
 func CreateDataDir() string {
 	xdg_data := os.Getenv("XDG_DATA_HOME")
@@ -19,7 +15,7 @@ func CreateDataDir() string {
 		}
 		xdg_data = fmt.Sprintf("%s/.local/share", home)
 	}
-    data := fmt.Sprintf("%s/peerpet", xdg_data)
+	data := fmt.Sprintf("%s/peerpet", xdg_data)
 	os.MkdirAll(data, os.FileMode(0755))
 	return data
 }
