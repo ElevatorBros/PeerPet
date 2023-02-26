@@ -57,6 +57,7 @@ func main() {
 		JoinCombat(&opponent_pet)
 	}
 
+	opponent_pet.Print()
 	//Combat()
 }
 
@@ -136,8 +137,7 @@ func WaitForReceive(duration float64) []byte {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Print(time.Since(start).Seconds())
-		if time.Since(start).Seconds() < duration {
+		if time.Since(start).Seconds() > duration {
 			return nil
 		}
 	}
