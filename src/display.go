@@ -147,35 +147,26 @@ func RunGUI() {
     game_flex.SetBorder(true).SetTitle("Games")
 
 
-    typing_box := tv.NewButton("Join")
-    typing_box.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
+    typing_button := tv.NewButton("Typing")
+    typing_button.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
 		// Movement
 		switch e.Key() {
 		case tc.KeyEnter:
-            EnterCombat(false)   
+            tmp := NewPet("hi")
+            typing(&game_flex, &tmp)
 		}
 
 
 		return e
 	})
-    roullette_box := tv.NewButton("Host")
-    roullette_box.Focus(func(p tv.Primitive) {
-        roullette_box.SetBackgroundColor(tc.ColorBlue)
+
+    roullette_button := tv.NewButton("Roullette")
+    roullette_button.Focus(func(p tv.Primitive) {
+        roullette_button.SetBackgroundColor(tc.ColorBlue)
     })
-    roullette_box.SetInputCapture(func(e *tc.EventKey) *tc.EventKey {
-		// Movement
-		switch e.Key() {
-		case tc.KeyEnter:
-            EnterCombat(true)   
-		}
 
-
-		return e
-	})
-    //roullette_box.SetBackgroundColor(tc.ColorRed)
-
-    game_flex.AddItem(typing_box, 0, 1, false)
-    game_flex.AddItem(roullette_box, 0, 1, false)
+    game_flex.AddItem(typing_button, 0, 1, false)
+    game_flex.AddItem(roullette_button, 0, 1, false)
 
 
     context := 0
