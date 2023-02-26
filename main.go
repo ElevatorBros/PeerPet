@@ -41,6 +41,7 @@ func Client() {
 	if err != nil {
 		panic(err)
 	}
+	client.RunGUI()
 
 	//reads stored json files to pet array
 	//pets := ReadPets()

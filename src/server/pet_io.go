@@ -22,14 +22,19 @@ func WritePetToJson(pet *common.Pet) error {
 
 // Reads file to []bytes
 func ReadPet() *common.Pet {
-	var pet = &common.Pet{}
+	var pet = new(common.Pet)
 
 	folder, err := os.Open(folder_path)
 	if err != nil {
 		panic(err)
 	}
 
-	data, _ := os.ReadFile(folder.Name() + "/pet.json")
+	files, err := folder.ReadDir(0)
+	if err != nil {
+		panic(err)
+	}
+
+	data, _ := os.ReadFile(folder.Name() + "/" + files[0].Name() + ".json")
 
 	err = common.UnJsonify(Secret(data), pet)
 	if err != nil {
