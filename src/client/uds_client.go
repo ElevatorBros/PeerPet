@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"net"
 	"net/http"
 
@@ -48,7 +49,7 @@ func PostPet(pet *common.Pet) error {
 	if err != nil {
 		return err
 	}
-	resp, err := udsClient.Post("/pet", "application/json", reader)
+	resp, err := udsClient.Post("http://unix/pet", "application/json", reader)
 	if err != nil {
 		return err
 	}

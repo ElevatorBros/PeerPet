@@ -31,7 +31,6 @@ func Server() {
 }
 
 func Client() {
-	client.RunGUI()
 	//creates pet named john
 	pet := common.NewPet("john")
 	//makes sure storing directory exists and returns path
@@ -42,6 +41,7 @@ func Client() {
 	if err != nil {
 		panic(err)
 	}
+	client.RunGUI()
 
 	//reads stored json files to pet array
 	//pets := ReadPets()

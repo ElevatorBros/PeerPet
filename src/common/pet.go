@@ -74,7 +74,7 @@ func (pet Pet) Print() {
 }
 
 // Converts Pet to []bytes
-func (pet *Pet) Jsonify() (petJson []byte, e error) {
+func (pet Pet) Jsonify() (petJson []byte, e error) {
 	return json.Marshal(pet)
 }
 
