@@ -30,7 +30,11 @@ func typing(w *tv.Flex, pet *Pet) {
         lastMessage = text
     })
     inputField.SetAcceptanceFunc(func(textToCheck string, lastChar rune) bool {
-        return lastChar == rune(quote[i])
+        if i < len(quote) {
+            return lastChar == rune(quote[i])
+        } else {
+            return false
+        }
     })
     inputField.SetDoneFunc(func(key tc.Key) {
         switch key {
@@ -40,6 +44,7 @@ func typing(w *tv.Flex, pet *Pet) {
         case tc.KeyEscape:
             // The tamagatchi will tell the user that they failed
         }
+        w.RemoveItem(inputField)
     })
 
     w.AddItem(inputField, 0, 1, true)
