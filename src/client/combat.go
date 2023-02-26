@@ -1,4 +1,4 @@
-package main
+package client
 
 import (
 	"log"
@@ -7,6 +7,7 @@ import (
 
 	"github.com/schollz/croc/v9/src/comm"
 	"github.com/schollz/croc/v9/src/utils"
+	"peer.pet/src/common"
 )
 
 // define 4 hours in seconds
@@ -25,7 +26,7 @@ var relay *Relay
 var connection *comm.Comm
 
 // my pet (can be used in other parts of program maybe)
-var my_pet Pet
+var my_pet *common.Pet
 
 // if in combat
 var in_combat = true
@@ -70,18 +71,15 @@ func InitializeCombat() {
 func InitializePets(host bool) {
 	// select my_pet
 	// DO SERVER GET PET INSTEAD OF THIS
-	pets := ReadPets()
-	if len(pets) == 0 {
-		// MAKE THIS IN GUI
-		log.Fatal("YOU HAVE NO PETS")
+	var err error
+	my_pet, err = ReadPet()
+	if err != nil {
+		panic(err)
 	}
-
-	// CHANGE 0 TO USER SELECTION
-	my_pet = pets[0]
 
 	// THIS IS BLOCKING
 	// gets opponent's pet
-	var opponent_pet Pet
+	var opponent_pet common.Pet
 	if host {
 		HostCombat(&opponent_pet)
 	} else {
@@ -90,25 +88,25 @@ func InitializePets(host bool) {
 }
 
 // joins combat server-side
-func HostCombat(opponent_pet *Pet) {
+func HostCombat(opponent_pet *common.Pet) {
 	data := WaitForReceive(FOUR_HOURS)
-	UnJsonify(data, opponent_pet)
+	common.UnJsonify(data, opponent_pet)
 	SendPet()
 }
 
 // joins combat client-side
-func JoinCombat(opponent_pet *Pet) {
+func JoinCombat(opponent_pet *common.Pet) {
 	SendPet()
 	data := WaitForReceive(5)
 	if data == nil {
 		// IMPLEMENT IN GUI TO TELL THAT ROOM IS INVALID
 	}
-	UnJsonify(data, opponent_pet)
+	common.UnJsonify(data, opponent_pet)
 }
 
 // sends my_pet to opponent
 func SendPet() {
-	data, err := Jsonify(my_pet)
+	data, err := my_pet.Jsonify()
 	if err != nil {
 		panic(err)
 	}

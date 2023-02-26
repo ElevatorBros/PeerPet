@@ -1,6 +1,7 @@
-package main
+package common
 
 import (
+	"encoding/json"
 	"log"
 	"math/rand"
 	"time"
@@ -70,4 +71,14 @@ func (pet Pet) ProgressEnergy(value float32) {
 // Pet ToString
 func (pet Pet) Print() {
 	log.Printf("%+v\n", pet)
+}
+
+// Converts Pet to []bytes
+func (pet *Pet) Jsonify() (petJson []byte, e error) {
+	return json.Marshal(pet)
+}
+
+// Converts []bytes to Pet
+func UnJsonify(data []byte, pet *Pet) error {
+	return json.Unmarshal(data, pet)
 }
