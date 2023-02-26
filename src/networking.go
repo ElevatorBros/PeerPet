@@ -10,9 +10,6 @@ import (
 	"github.com/schollz/croc/v9/src/tcp"
 )
 
-//go:linkname lookup models.lookup
-func lookup(address string) (ipaddress string, err error)
-
 type Relay struct {
 	host     string
 	port     string
@@ -20,11 +17,11 @@ type Relay struct {
 }
 
 func (r *Relay) JoinRoom(shared_secret string) (*comm.Comm, error) {
-	ipaddr, err := lookup(r.host)
-	if err != nil {
+	ipaddr, err := net.LookupHost(r.host)
+	if err != nil || len(ipaddr) < 1 {
 		log.Fatal(err)
 	}
-	comm, _, _, err := tcp.ConnectToTCPServer(net.JoinHostPort(ipaddr, r.port), r.password, shared_secret)
+	comm, _, _, err := tcp.ConnectToTCPServer(net.JoinHostPort(ipaddr[0], r.port), r.password, shared_secret)
 	if err != nil {
 		return nil, err
 	}
