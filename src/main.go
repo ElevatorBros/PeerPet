@@ -1,27 +1,24 @@
 package main
 
 func main() {
-	//a := NewRelay()
-	//a.joinRoom("aaabb44")
-
 	//RunGUI()
 	//creates pet named john
 	pet := NewPet("john")
 	pet1 := NewPet("ronan")
 	pet2 := NewPet("dog")
 	//makes sure storing directory exists and returns path
-	path := CreateDataDir()
+	folder_path = CreateDataDir()
 
 	//serializes pet to json
-	err := WritePetToJson(pet, path)
-	WritePetToJson(pet1, path)
-	WritePetToJson(pet2, path)
+	err := WritePetToJson(pet)
+	WritePetToJson(pet1)
+	WritePetToJson(pet2)
 	if err != nil {
 		panic(err)
 	}
 
 	//reads stored json files to pet array
-	pets := ReadPets(path)
+	pets := ReadPets()
 
 	//prints pet array data
 	for _, thing := range pets {
