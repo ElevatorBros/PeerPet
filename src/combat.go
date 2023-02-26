@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"sync"
 	"time"
 
@@ -41,25 +42,37 @@ func main() {
 	connection = temp_conn
 
 	my_pet = ReadPets()[0]
-	my_pet.Print()
+
+	var host bool
+	if len(os.Args) == 1 {
+		host = true
+	} else {
+		host = false
+	}
 
 	var opponent_pet Pet
+	if host {
+		HostCombat(&opponent_pet)
+	} else {
+		JoinCombat(&opponent_pet)
+	}
 
-	HostCombat(&opponent_pet)
-	Combat()
+	//Combat()
 }
 
 func HostCombat(opponent_pet *Pet) {
-	UnJsonify(WaitForReceive(FOUR_HOURS), opponent_pet)
+	data := WaitForReceive(FOUR_HOURS)
+	UnJsonify(data, opponent_pet)
 	SendPet()
 }
 
-func JoinCombat() {
+func JoinCombat(opponent_pet *Pet) {
 	SendPet()
 	data := WaitForReceive(5)
-	if data != nil {
+	if data == nil {
 		// IMPLEMENT IN GUI TO TELL THAT ROOM IS INVALID
 	}
+	UnJsonify(data, opponent_pet)
 }
 
 func SendPet() {
@@ -123,6 +136,7 @@ func WaitForReceive(duration float64) []byte {
 		if err != nil {
 			log.Fatal(err)
 		}
+		log.Print(time.Since(start).Seconds())
 		if time.Since(start).Seconds() < duration {
 			return nil
 		}

@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-var folder_path string
+var folder_path = CreateDataDir()
 
 // Converts Pet to []bytes
 func Jsonify(pet Pet) (petJson []byte, e error) {
