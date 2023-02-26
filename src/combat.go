@@ -2,10 +2,15 @@ package main
 
 import (
 	"log"
+	"os"
 	"sync"
+	"time"
 
 	"github.com/schollz/croc/v9/src/comm"
 )
+
+// define 4 hours in seconds
+const FOUR_HOURS = 999999999999
 
 // version number
 var version_number = 0.0
@@ -19,10 +24,13 @@ var relay *Relay
 // connection
 var connection *comm.Comm
 
+// my pet
+var my_pet Pet
+
 // if in combat
 var in_combat = true
 
-func main1() {
+func main() {
 	if relay == nil {
 		relay = NewRelay()
 	}
@@ -33,28 +41,50 @@ func main1() {
 	}
 	connection = temp_conn
 
-	my_pet := ReadPets()[0]
-	my_pet.Print()
+	my_pet = ReadPets()[0]
 
-	SendPets()
-	Combat()
+	var host bool
+	if len(os.Args) == 1 {
+		host = true
+	} else {
+		host = false
+	}
+
+	var opponent_pet Pet
+	if host {
+		HostCombat(&opponent_pet)
+	} else {
+		JoinCombat(&opponent_pet)
+	}
+
+	//Combat()
 }
 
-func HostCombat() {
-
-	//wait for a pet reception
-	//send own pet
-
+func HostCombat(opponent_pet *Pet) {
+	data := WaitForReceive(FOUR_HOURS)
+	UnJsonify(data, opponent_pet)
+	SendPet()
 }
 
-func JoinCombat() {
-	//once joined, send pet
-	//if I don't receive pet in k seconds -> invalid room
-
+func JoinCombat(opponent_pet *Pet) {
+	SendPet()
+	data := WaitForReceive(5)
+	if data == nil {
+		// IMPLEMENT IN GUI TO TELL THAT ROOM IS INVALID
+	}
+	UnJsonify(data, opponent_pet)
 }
 
-func SendPets() {
+func SendPet() {
+	data, err := Jsonify(my_pet)
+	if err != nil {
+		panic(err)
+	}
 
+	err = connection.Send(data)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func Combat() {
@@ -77,7 +107,7 @@ func ReceiveAttack() []byte {
 	// sends done signal at end of function
 	defer wg.Done()
 
-	data := WaitForReceive()
+	data := WaitForReceive(FOUR_HOURS)
 	//time.Sleep(5 * 1000 * time.Millisecond)
 	log.Printf("%s\n", string(data[:]))
 
@@ -97,13 +127,18 @@ func SendAttack(data []byte) {
 	log.Printf("%s\n", string(data[:]))
 }
 
-func WaitForReceive() []byte {
+func WaitForReceive(duration float64) []byte {
+	start := time.Now()
 	var data []byte
 	var err error
 	for len(data) == 1 || len(data) == 0 {
 		data, err = connection.Receive()
 		if err != nil {
 			log.Fatal(err)
+		}
+		log.Print(time.Since(start).Seconds())
+		if time.Since(start).Seconds() < duration {
+			return nil
 		}
 	}
 	return data
