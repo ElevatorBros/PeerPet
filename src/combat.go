@@ -36,17 +36,46 @@ var in_combat = true
 var reader = bufio.NewReader(os.Stdin)
 
 func EnterCombat(host bool) {
-	/*
-		host := false
-		if len(os.Args) == 2 && os.Args[1] == "-S" {
-			host = true
-		}
-	*/
+	_, key := InitializeCombat()
 
+	// select my_pet
+	pets := ReadPets()
+	if len(pets) == 0 {
+		// MAKE THIS IN GUI
+		log.Fatal("YOU HAVE NO PETS")
+	}
+
+	// CHANGE 0 TO USER SELECTION
+	my_pet = pets[0]
+
+	// gets opponent's pet based on host or not
+	var opponent_pet Pet
+	if host {
+		HostCombat(&opponent_pet)
+	} else {
+		JoinCombat(&opponent_pet)
+	}
+	log.Print(key)
+
+	log.Print("You are against this pet: ")
+	opponent_pet.Print()
+
+	Combat()
+}
+
+func InitializeCombat() (bool, string) {
+	// set host based on command args
+	host := false
+	if len(os.Args) == 2 && os.Args[1] == "-S" {
+		host = true
+	}
+
+	// initialize relay if not ready
 	if relay == nil {
 		relay = NewRelay()
 	}
 
+	// dispay or request room key
 	var key string
 	if host {
 		key = utils.GetRandomName()
@@ -58,33 +87,14 @@ func EnterCombat(host bool) {
 		key = key[:len(key)-1]
 	}
 
+	// join room
 	temp_conn, err := relay.JoinRoom(key)
 	if err != nil {
 		panic(err)
 	}
 	connection = temp_conn
 
-	pets := ReadPets()
-	if len(pets) == 0 {
-		// MAKE THIS IN GUI
-		log.Fatal("YOU HAVE NO PETS")
-	}
-
-	// CHANGE 0 TO USER SELECTION
-	my_pet = pets[0]
-
-	// HOST OR NOT
-	// gets opponent's pet
-	var opponent_pet Pet
-	if host {
-		HostCombat(&opponent_pet)
-	} else {
-		JoinCombat(&opponent_pet)
-	}
-	log.Print(key)
-
-	opponent_pet.Print()
-	Combat()
+	return host, key
 }
 
 // joins combat server-side
@@ -121,29 +131,34 @@ func SendPet() {
 func Combat() {
 	defer connection.Close()
 
+	var data []byte
 	for in_combat {
 		//number of goroutine to wait to finish is 2
 		wg.Add(2)
 
-		go ReceiveAttack()
+		go ReceiveAttack(&data)
 		go SendAttack()
 
 		// waits for goroutines to send done signal
 		wg.Wait()
-		log.Print("finished")
+
+		log.Printf("DAMAGE RECEIVED: %s\n", string(data[:]))
+		CalculateRound()
 	}
 }
 
+// calculates numbers in round
+func CalculateRound() {
+	log.Print("finished")
+}
+
 // wait for attack to be received
-func ReceiveAttack() []byte {
+func ReceiveAttack(data *[]byte) {
 	// sends done signal at end of function
 	defer wg.Done()
 
-	data := WaitForReceive(FOUR_HOURS)
+	*data = WaitForReceive(FOUR_HOURS)
 	//time.Sleep(5 * 1000 * time.Millisecond)
-	log.Printf("%s\n", string(data[:]))
-
-	return data
 }
 
 // send an attack
@@ -160,7 +175,7 @@ func SendAttack() {
 	}
 
 	//time.Sleep(2 * 1000 * time.Millisecond)
-	log.Printf("%s\n", string(data[:]))
+	log.Printf("DAMAGE SENT: %s\n", string(data[:]))
 }
 
 // wait for data to be received
