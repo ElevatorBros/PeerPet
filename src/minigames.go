@@ -4,6 +4,7 @@
 >>>>>>> bc8e1e5 (typing game!)
 package main
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 package main 
@@ -12,6 +13,9 @@ package main
 =======
 /*
 >>>>>>> 32edd7b (For Ronan)
+=======
+
+>>>>>>> aa205e1 (love you josh)
 import (
 	"log"
 	"math/rand"
@@ -90,6 +94,7 @@ func typing(w *tv.Flex, pet *Pet) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> aa205e1 (love you josh)
@@ -98,3 +103,6 @@ func typing(w *tv.Flex, pet *Pet) {
 =======
 */
 >>>>>>> e5565ce (combat buttons)
+=======
+
+>>>>>>> aa205e1 (love you josh)
