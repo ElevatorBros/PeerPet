@@ -4,6 +4,7 @@ import (
 	// "fmt"
 	// "log"
 	"fmt"
+	// "log"
 
 	"github.com/bennicholls/burl-E/reximage"
 	tc "github.com/gdamore/tcell/v2"
@@ -70,8 +71,10 @@ func CombatSetup(pages *tv.Pages) {
         combat_host_flex.AddItem(view, 0, 1, true)
 		combat_setup.AddItem(combat_host_flex, 0, 1, true)
         pages.SwitchToPage("combat_setup")
-        EnterCombat(true)
-        pages.SwitchToPage("combat_actual")
+        go func() {
+            EnterCombat(true)
+            pages.SwitchToPage("combat_actual")
+        }()
 	})
 	client_button.SetSelectedFunc(func() {
         combat_client_form.SetLabel("Enter host's key here:").SetDoneFunc(func(key tc.Key) {
@@ -82,6 +85,13 @@ func CombatSetup(pages *tv.Pages) {
 		combat_setup.AddItem(combat_client_form, 0, 1, true)
         pages.SwitchToPage("combat_setup")
 	})
+}
+
+func CombatActual(flex *tv.Flex) {
+    txt := tv.NewTextArea()
+    input := tv.NewInputField()
+    flex.AddItem(txt, 0, 1, false)
+    flex.AddItem(input, 0, 1, true)
 }
 
 func RunGUI() {
@@ -105,6 +115,7 @@ func RunGUI() {
 	main.AddItem(roullette_button, 0, 1, false)
 
     CombatSetup(pages)
+    CombatActual(combat_actual)
 	pages.AddPage("main", main, true, true)
 	pages.AddPage("combat_actual", combat_actual, true, false)
 
