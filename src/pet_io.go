@@ -6,6 +6,8 @@ import (
 	"os"
 )
 
+var folder_path string
+
 // Converts Pet to []bytes
 func Jsonify(pet *Pet) (petJson []byte, e error) {
 	return json.Marshal(pet)
@@ -17,18 +19,18 @@ func UnJsonify(data []byte, pet *Pet) error {
 }
 
 // Writes []bytes to file
-func WritePetToJson(pet *Pet, path string) error {
+func WritePetToJson(pet *Pet) error {
 	data, err := Jsonify(pet)
 	if err != nil {
 		panic(err)
 	}
 
-	err = os.WriteFile(path+"/"+pet.Name+".json", Secret(data), fs.FileMode(0644))
+	err = os.WriteFile(folder_path+"/"+pet.Name+".json", Secret(data), fs.FileMode(0644))
 	return err
 }
 
 // Reads file to []bytes
-func ReadPets(folder_path string) []Pet {
+func ReadPets() []Pet {
 	var pets = []Pet{}
 
 	folder, err := os.Open(folder_path)

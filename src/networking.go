@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -9,13 +10,21 @@ import (
 	"github.com/schollz/croc/v9/src/tcp"
 )
 
+//go:linkname lookup models.lookup
+func lookup(address string) (ipaddress string, err error)
+
 type Relay struct {
-	ip_port  string
+	host     string
+	port     string
 	password string
 }
 
-func (r *Relay) joinRoom(shared_secret string) (*comm.Comm, error) {
-	comm, _, _, err := tcp.ConnectToTCPServer(r.ip_port, r.password, shared_secret)
+func (r *Relay) JoinRoom(shared_secret string) (*comm.Comm, error) {
+	ipaddr, err := lookup(r.host)
+	if err != nil {
+		log.Fatal(err)
+	}
+	comm, _, _, err := tcp.ConnectToTCPServer(net.JoinHostPort(ipaddr, r.port), r.password, shared_secret)
 	if err != nil {
 		return nil, err
 	}
@@ -26,16 +35,17 @@ func NewRelay() *Relay {
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Could not load .env file")
 	}
-	ip_port := os.Getenv("RELAY_IP")
-	if ip_port == "" {
-		log.Fatal("RELAY_IP not net in .env")
-	}
-	pass := os.Getenv("RELAY_PASSWORD")
-	if pass == "" {
-		log.Fatal("RELAY_PASSWORD not net in .env")
-	}
 	return &Relay{
-		ip_port,
-		pass,
+		readEnv("RELAY_HOST"),
+		readEnv("RELAY_PORT"),
+		readEnv("RELAY_PASS"),
 	}
+}
+
+func readEnv(envname string) string {
+	value := os.Getenv(envname)
+	if value == "" {
+		log.Fatal(envname + " not set in .env")
+	}
+	return value
 }
