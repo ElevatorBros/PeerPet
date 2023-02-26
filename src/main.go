@@ -1,7 +1,7 @@
 package main
 
 func main() {
-	//RunGUI()
+	RunGUI()
 	//creates pet named john
 	pet := NewPet("john")
 	pet1 := NewPet("ronan")
@@ -18,7 +18,7 @@ func main() {
 	}
 
 	//reads stored json files to pet array
-	pets := ReadPets()
+	//pets := ReadPets()
 
 	////prints pet array data
 	//for _, thing := range pets {
