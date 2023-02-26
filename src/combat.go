@@ -1,5 +1,5 @@
 package main
-/*
+
 import (
 	"bufio"
 	"log"
@@ -194,4 +194,3 @@ func WaitForReceive(duration float64) []byte {
 	}
 	return data
 }
-*/
