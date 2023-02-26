@@ -29,7 +29,12 @@ func ReadPet() *common.Pet {
 		panic(err)
 	}
 
-	data, _ := os.ReadFile(folder.Name() + "/pet.json")
+	files, err := folder.ReadDir(0)
+	if err != nil {
+		panic(err)
+	}
+
+	data, _ := os.ReadFile(folder.Name() + "/" + files[0].Name() + ".json")
 
 	err = common.UnJsonify(Secret(data), pet)
 	if err != nil {
