@@ -1,5 +1,5 @@
 package main 
-
+/*
 import (
     "os"
     "strings"
@@ -50,3 +50,4 @@ func typing(window tv.Box, pet *Pet) {
 
     }
 }
+*/
